@@ -1,10 +1,16 @@
 package dev.lhs.charity_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import dev.lhs.charity_backend.entity.role.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,6 +30,10 @@ public class User extends BaseEntity {
     @Column(name = "full_name")
     private String fullName;
 
+    @Column(name = "dob", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    private LocalDate dob;
+
     @Column(name = "email", unique = true, nullable = false)
     private String email;
 
@@ -36,8 +46,14 @@ public class User extends BaseEntity {
     @Column(name = "avatar_url")
     private String avatar_url;
 
-    @Column(name = "role", nullable = false)
-    private String role;
+    // n user - n role
+    @ManyToMany
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private Set<Role> roles = new HashSet<>();
     //----------------------
     // user - skill_auc
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
