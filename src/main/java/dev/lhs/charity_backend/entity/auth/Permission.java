@@ -1,4 +1,4 @@
-package dev.lhs.charity_backend.entity.role;
+package dev.lhs.charity_backend.entity.auth;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "permission")
+@Table(name = "permissions")
 public class Permission {
 
     @Id

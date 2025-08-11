@@ -28,6 +28,6 @@ public class BaseEntity { // Cho phep Serialize
     private LocalDateTime updateAt;
 
     @Column(name = "status")
-    private Integer status;
+    private Integer status = 1;
 
 }
