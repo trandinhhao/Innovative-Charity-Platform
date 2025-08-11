@@ -1,10 +1,10 @@
 package dev.lhs.charity_backend.service;
 
 import dev.lhs.charity_backend.dto.request.UserCreationRequest;
-import dev.lhs.charity_backend.dto.response.UserCreationResponse;
+import dev.lhs.charity_backend.dto.response.UserResponse;
 
 public interface UserService {
 
-    UserCreationResponse createUser(UserCreationRequest request);
+    UserResponse createUser(UserCreationRequest request);
 
 }

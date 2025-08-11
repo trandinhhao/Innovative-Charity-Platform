@@ -7,10 +7,9 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCreationResponse {
+public class PermissionResponse {
 
-    private String id;
-    private String username;
-    private String role;
+    private String name;
+    private String description;
 
 }

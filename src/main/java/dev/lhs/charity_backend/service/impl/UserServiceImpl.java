@@ -2,9 +2,9 @@ package dev.lhs.charity_backend.service.impl;
 
 import dev.lhs.charity_backend.constant.PredefinedRole;
 import dev.lhs.charity_backend.dto.request.UserCreationRequest;
-import dev.lhs.charity_backend.dto.response.UserCreationResponse;
+import dev.lhs.charity_backend.dto.response.UserResponse;
 import dev.lhs.charity_backend.entity.User;
-import dev.lhs.charity_backend.entity.role.Role;
+import dev.lhs.charity_backend.entity.auth.Role;
 import dev.lhs.charity_backend.enumeration.ErrorCode;
 import dev.lhs.charity_backend.exception.AppException;
 import dev.lhs.charity_backend.mapper.UserMapper;
@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
 
     @Override
-    public UserCreationResponse createUser(UserCreationRequest request) {
+    public UserResponse createUser(UserCreationRequest request) {
         User user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword())); // bcrypt encoding
 
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
         try {
             user = userRepository.save(user);
         } catch (Exception exception) {
-            throw new AppException(ErrorCode.USER_EXISTED);
+            throw new AppException(ErrorCode.ACCOUNT_INFO_EXISTED); // end and "return" exception
         }
         return userMapper.toUserCreationResponse(user);
     }

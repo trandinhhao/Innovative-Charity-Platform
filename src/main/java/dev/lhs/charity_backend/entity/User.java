@@ -1,12 +1,11 @@
 package dev.lhs.charity_backend.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import dev.lhs.charity_backend.entity.role.Role;
+import dev.lhs.charity_backend.entity.auth.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
