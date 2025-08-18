@@ -59,10 +59,11 @@ public class ApplicationConfig {
                 // create Admin account
                 User user = User.builder()
                         .username(ADMIN_USERNAME)
-                        .password(ADMIN_PASSWORD)
+                        .password(passwordEncoder.encode(ADMIN_PASSWORD))
                         .dob(LocalDate.parse("1999-09-19"))
                         .email("admin@gmail.com")
                         .phoneNumber("0123456789")
+                        .roles(roles)
                         .build();
                 userRepository.save(user);
                 log.warn("admin user has been created with default password: admin, please change it");

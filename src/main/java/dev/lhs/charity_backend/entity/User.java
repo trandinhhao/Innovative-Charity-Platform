@@ -43,7 +43,7 @@ public class User extends BaseEntity {
     private String address;
 
     @Column(name = "avatar_url")
-    private String avatar_url;
+    private String avatarUrl;
 
     // n user - n role
     @ManyToMany
