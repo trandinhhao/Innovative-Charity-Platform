@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: charity_backend
+  ai:
+    openai:
+      api-key: ${GEMINI_KEY}
+      chat:
+        base-url: https://openrouter.ai/api/v1
+        completions-path: /chat/completions
+        options:
+          modal: openai/gpt-4o-mini
+    chat:
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: always
+
+  datasource:
+    url: ${DBMS_CONNECTION:jdbc:mysql://localhost:3306/charity_platform}
+    username: ${DBMS_USERNAME:root}
+    password: ${DBMS_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show_sql: true
+    properties:
+      hibernate.format_sql: true
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+
+jwt:
+  signerKey: ${SIGNER_KEY}
+  valid-duration: 3600 # in seconds
+  refreshable-duration: 36000 # in seconds
