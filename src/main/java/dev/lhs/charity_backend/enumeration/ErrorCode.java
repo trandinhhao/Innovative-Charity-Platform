@@ -19,7 +19,9 @@ public enum ErrorCode {
     INVALID_EMAIL(1009, "Email is not valid", HttpStatus.BAD_REQUEST),
     INVALID_PHONENUMBER(1010, "Phone number is not valid", HttpStatus.BAD_REQUEST),
     INVALID_PERMISSION(1011, "Permission does not exists", HttpStatus.BAD_REQUEST),
-    INVALID_ROLE(1012, "Role does not exists", HttpStatus.BAD_REQUEST)
+    INVALID_ROLE(1012, "Role does not exists", HttpStatus.BAD_REQUEST),
+
+    CAMPAIGN_NOT_EXISTED(1013, "Campaign not existed", HttpStatus.NOT_FOUND)
     ;
 
     private final int code;
