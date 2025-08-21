@@ -9,9 +9,14 @@ import org.springframework.ai.chat.memory.MessageWindowChatMemory;
 import org.springframework.ai.chat.memory.repository.jdbc.JdbcChatMemoryRepository;
 import org.springframework.ai.chat.messages.SystemMessage;
 import org.springframework.ai.chat.messages.UserMessage;
+import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.ai.chat.prompt.Prompt;
+import org.springframework.ai.content.Media;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.MimeTypeUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ChatServiceImpl implements ChatService {
@@ -46,6 +51,25 @@ public class ChatServiceImpl implements ChatService {
         return chatClient
                 .prompt(prompt)
                 .advisors(advisorSpec -> advisorSpec.param(ChatMemory.CONVERSATION_ID, conversationId))
+                .call()
+                .content();
+    }
+
+    @Override
+    public String chatWithImage(MultipartFile file, String message) {
+        Media media = Media.builder()
+                .mimeType(MimeTypeUtils.parseMimeType(file.getContentType()))
+                .data(file.getResource())
+                .build();
+
+        ChatOptions chatOptions = ChatOptions.builder()
+                .temperature(0D) // ra kqua on dinh nhat, k dc sang tao
+                .build();
+
+        return chatClient.prompt()
+                .options(chatOptions)
+                .system("You are LHS.AI")
+                .user(promptUserSpec -> promptUserSpec.media(media).text(message))
                 .call()
                 .content();
     }
