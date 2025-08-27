@@ -26,8 +26,9 @@ public class Campaign extends BaseEntity {
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "curent_amount", nullable = false, precision = 19, scale = 3)
-    private BigDecimal currentAmount;
+    @Builder.Default
+    @Column(name = "current_amount", nullable = false, precision = 19, scale = 3)
+    private BigDecimal currentAmount = BigDecimal.ZERO;
 
     @Column(name = "goal_amount", nullable = false, precision = 19, scale = 3)
     private BigDecimal goalAmount;
