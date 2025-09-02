@@ -22,7 +22,9 @@ public enum ErrorCode {
     INVALID_ROLE(1012, "Role does not exists", HttpStatus.BAD_REQUEST),
 
     CAMPAIGN_NOT_EXISTED(1013, "Campaign not existed", HttpStatus.NOT_FOUND),
-    ORGANIZATION_NOT_EXISTED(1014, "Organization not existed", HttpStatus.NOT_FOUND)
+    ORGANIZATION_NOT_EXISTED(1014, "Organization not existed", HttpStatus.NOT_FOUND),
+    INVALID_BID_PRICE(1015, "Bid price must be greater than current price and must be divisible by step",
+            HttpStatus.BAD_REQUEST)
     ;
 
     private final int code;
