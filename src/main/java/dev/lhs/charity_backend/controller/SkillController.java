@@ -1,7 +1,9 @@
 package dev.lhs.charity_backend.controller;
 
+import dev.lhs.charity_backend.dto.request.SkillAuctionRequest;
 import dev.lhs.charity_backend.dto.request.SkillCreationRequest;
 import dev.lhs.charity_backend.dto.response.ApiResponse;
+import dev.lhs.charity_backend.dto.response.SkillAuctionResponse;
 import dev.lhs.charity_backend.dto.response.SkillCreationResponse;
 import dev.lhs.charity_backend.service.SkillService;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +26,12 @@ public class SkillController {
     }
 
     // user auc skill
-
+    @PostMapping("/{userId}/{skillId}")
+    ApiResponse<SkillAuctionResponse> auction (@PathVariable Long userId,
+                                               @PathVariable Long skillId,
+                                               @RequestBody SkillAuctionRequest request) {
+        return ApiResponse.<SkillAuctionResponse>builder()
+                .result(skillService.auction(userId, skillId, request))
+                .build();
+    }
 }
