@@ -13,7 +13,4 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ChallengeController {
 
-    @GetMapping
-    ApiResponse<List<>>
-
 }

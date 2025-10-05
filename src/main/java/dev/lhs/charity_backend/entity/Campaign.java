@@ -39,8 +39,8 @@ public class Campaign extends BaseEntity {
     @Column(name = "end_date", nullable = false)
     private LocalDateTime endDate;
 
-    // 1 capmpaign - n contentg_block
-    @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL, orphanRemoval = true)
+    // 1 capmpaign - n content_block
+    @OneToMany(mappedBy = "campaign", cascade = CascadeType.REMOVE)
     private List<CampaignContentBlock> campaignContentBlocks = new ArrayList<>();
 
     // 1 campaign - n skill

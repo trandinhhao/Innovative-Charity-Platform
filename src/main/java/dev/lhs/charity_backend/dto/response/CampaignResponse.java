@@ -23,7 +23,8 @@ public class CampaignResponse {
     private List<CampaignContentBlock> campaignContentBlocks;
     private List<Skill> skills;
     private List<Challenge> challenges;
-    private Organization organization;
+//    private Organization organization;
+    private Long organizationId;
     private List<CampaignComment> campaignComments;
 
 }

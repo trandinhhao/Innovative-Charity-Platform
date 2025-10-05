@@ -1,5 +1,6 @@
 package dev.lhs.charity_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.lhs.charity_backend.enumeration.ContentType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,5 +30,6 @@ public class CampaignContentBlock {
     // n content_block - 1 campaign
     @ManyToOne
     @JoinColumn(name = "campaign_id", nullable = false)
+    @JsonIgnore
     private Campaign campaign;
 }

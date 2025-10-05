@@ -22,6 +22,6 @@ public class CampaignRequest {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private Long orgId;
-    private List<CampaignContentBlock> campaignContentBlocks;
+    private List<CampaignContentBlockRequest> campaignContentBlocks = new ArrayList<>();
 
 }

@@ -1,6 +1,7 @@
 package dev.lhs.charity_backend.controller;
 
 import dev.lhs.charity_backend.dto.request.CampaignRequest;
+import dev.lhs.charity_backend.dto.request.CampaignUpdateRequest;
 import dev.lhs.charity_backend.dto.response.ApiResponse;
 import dev.lhs.charity_backend.dto.response.CampaignResponse;
 import dev.lhs.charity_backend.service.CampaignService;
@@ -46,7 +47,7 @@ public class CampaignController {
 
     @PutMapping("/{campId}")
     ApiResponse<CampaignResponse> update (@PathVariable Long campId,
-                                          @RequestBody CampaignRequest request) {
+                                          @RequestBody CampaignUpdateRequest request) {
         return ApiResponse.<CampaignResponse>builder()
                 .result(campaignService.update(campId, request))
                 .build();

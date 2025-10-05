@@ -16,6 +16,6 @@ public interface SkillAuctionMapper {
     SkillAuction toSkillAuction (SkillAuctionRequest request);
 
     @Mapping(target = "userAucId", expression = "java(userAucId)")
-    @Mapping(target = "skillId", source = "skill.id")
+    @Mapping(target = "skillId", source = "skillAuction.skill.id")
     SkillAuctionResponse toSkillAuctionResponse (SkillAuction skillAuction, Long userAucId);
 }

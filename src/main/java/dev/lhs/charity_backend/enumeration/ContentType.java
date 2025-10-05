@@ -1,5 +1,6 @@
 package dev.lhs.charity_backend.enumeration;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 
 @Getter
