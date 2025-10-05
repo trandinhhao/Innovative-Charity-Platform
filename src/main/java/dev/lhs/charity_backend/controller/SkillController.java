@@ -26,7 +26,7 @@ public class SkillController {
     }
 
     // user auc skill
-    @PostMapping("/{userId}/{skillId}")
+    @PostMapping("/auction/{userId}/{skillId}")
     ApiResponse<SkillAuctionResponse> auction (@PathVariable Long userId,
                                                @PathVariable Long skillId,
                                                @RequestBody SkillAuctionRequest request) {

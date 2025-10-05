@@ -1,25 +1,26 @@
 package dev.lhs.charity_backend.dto.request;
 
-import jakarta.persistence.Column;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SkillCreationRequest {
+public class CampaignUpdateRequest {
 
     private String name;
     private String thumbnailUrl;
     private String description;
-    private BigDecimal startingBid;
-    private BigDecimal stepBid;
-    private BigDecimal targetBid;
+    private BigDecimal goalAmount;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private Long campaignId;
+    private Long orgId;
+    private List<CampaignContentBlockUpdateRequest> campaignContentBlocks = new ArrayList<>();
+
 }
