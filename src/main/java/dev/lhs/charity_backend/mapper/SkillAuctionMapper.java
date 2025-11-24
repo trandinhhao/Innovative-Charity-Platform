@@ -2,7 +2,6 @@ package dev.lhs.charity_backend.mapper;
 
 import dev.lhs.charity_backend.dto.request.SkillAuctionRequest;
 import dev.lhs.charity_backend.dto.response.SkillAuctionResponse;
-import dev.lhs.charity_backend.entity.Skill;
 import dev.lhs.charity_backend.entity.SkillAuction;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

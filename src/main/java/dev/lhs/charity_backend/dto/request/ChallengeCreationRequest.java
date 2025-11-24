@@ -1,4 +1,4 @@
-package dev.lhs.charity_backend.dto.response;
+package dev.lhs.charity_backend.dto.request;
 
 import lombok.*;
 
@@ -8,20 +8,15 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class SkillCreationResponse {
-
+@NoArgsConstructor
+public class ChallengeCreationRequest {
     private String name;
     private String thumbnailUrl;
     private String description;
-    private BigDecimal startingBid;
-    private BigDecimal stepBid;
-    private BigDecimal curentBid;
-    private BigDecimal targetBid;
+    private BigDecimal unitAmount;
+    private BigDecimal goalAmount;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private String username;
     private Long campaignId;
-
 }

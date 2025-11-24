@@ -1,10 +1,13 @@
 package dev.lhs.charity_backend.controller;
 
+import dev.lhs.charity_backend.dto.request.ChallengeCreationRequest;
 import dev.lhs.charity_backend.dto.response.ApiResponse;
+import dev.lhs.charity_backend.dto.response.ChallengeResponse;
+import dev.lhs.charity_backend.dto.response.UserChallengeResponse;
+import dev.lhs.charity_backend.service.ChallengeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -12,5 +15,42 @@ import java.util.List;
 @RequestMapping("/challenges")
 @RequiredArgsConstructor
 public class ChallengeController {
+    private final ChallengeService challengeService;
 
+    @PostMapping("/{userId}")
+    ApiResponse<ChallengeResponse> create(@PathVariable Long userId, @RequestBody ChallengeCreationRequest request) {
+        return ApiResponse.<ChallengeResponse>builder()
+                .result(challengeService.createChallenge(userId, request))
+                .build();
+    }
+
+    @GetMapping
+    ApiResponse<List<ChallengeResponse>> getChallenges() {
+        return ApiResponse.<List<ChallengeResponse>>builder()
+                .result(challengeService.getChallenges())
+                .build();
+    }
+
+    @GetMapping("/{challengeId}")
+    ApiResponse<ChallengeResponse> getChallenge(@PathVariable Long challengeId) {
+        return ApiResponse.<ChallengeResponse>builder()
+                .result(challengeService.getChallenge(challengeId))
+                .build();
+    }
+
+    @DeleteMapping("/{challengeId}")
+    ApiResponse<String> delete (@PathVariable Long challengeId) {
+        return ApiResponse.<String>builder()
+                .result(challengeService.deleteChallenge(challengeId))
+                .build();
+    }
+
+    @PostMapping("/{challengeId}/submit/{userId}")
+    ApiResponse<UserChallengeResponse> submitProof (@PathVariable Long challengeId,
+                                                    @PathVariable Long userId,
+                                                    @RequestParam("file")MultipartFile file) {
+        return ApiResponse.<UserChallengeResponse>builder()
+                .result(challengeService.submitProof(userId, challengeId, file))
+                .build();
+    }
 }

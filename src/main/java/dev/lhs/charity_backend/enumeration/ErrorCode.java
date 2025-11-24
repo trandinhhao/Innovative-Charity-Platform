@@ -23,8 +23,13 @@ public enum ErrorCode {
 
     CAMPAIGN_NOT_EXISTED(1013, "Campaign not existed", HttpStatus.NOT_FOUND),
     ORGANIZATION_NOT_EXISTED(1014, "Organization not existed", HttpStatus.NOT_FOUND),
-    INVALID_BID_PRICE(1015, "Bid price must be greater than current price and must be divisible by step",
-            HttpStatus.BAD_REQUEST)
+    INVALID_BID_PRICE(1015, "Bid price must be greater than current",
+            HttpStatus.BAD_REQUEST),
+    SKILL_NOT_EXISTED(1016, "Skill not existed", HttpStatus.NOT_FOUND),
+    CHALLENGE_NOT_EXISTED(1017, "Challenge not existed", HttpStatus.NOT_FOUND),
+    COMMENT_NOT_EXISTED(1018, "Comment not existed", HttpStatus.NOT_FOUND),
+
+    IMAGE_UPLOAD_FAIL(1019, "Upload image fail!", HttpStatus.BAD_REQUEST)
     ;
 
     private final int code;

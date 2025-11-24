@@ -29,11 +29,8 @@ public class Skill extends BaseEntity {
     @Column(name = "starting_bid", nullable = false, precision = 19, scale = 3)
     private BigDecimal startingBid;
 
-    @Column(name = "step_bid", nullable = false, precision = 19, scale = 3)
-    private BigDecimal stepBid;
-
     @Column(name = "curent_bid", nullable = false, precision = 19, scale = 3)
-    private BigDecimal curentBid;
+    private BigDecimal curentBid = BigDecimal.ZERO;
 
     @Column(name = "target_bid", nullable = false, precision = 19, scale = 3)
     private BigDecimal targetBid;

@@ -1,25 +1,19 @@
 package dev.lhs.charity_backend.service.impl;
 
-import dev.lhs.charity_backend.dto.request.CampaignContentBlockRequest;
-import dev.lhs.charity_backend.dto.request.CampaignContentBlockUpdateRequest;
-import dev.lhs.charity_backend.dto.request.CampaignRequest;
-import dev.lhs.charity_backend.dto.request.CampaignUpdateRequest;
+import dev.lhs.charity_backend.dto.request.*;
+import dev.lhs.charity_backend.dto.response.CampaignCommentResponse;
 import dev.lhs.charity_backend.dto.response.CampaignResponse;
-import dev.lhs.charity_backend.entity.Campaign;
-import dev.lhs.charity_backend.entity.CampaignContentBlock;
-import dev.lhs.charity_backend.entity.Organization;
+import dev.lhs.charity_backend.entity.*;
 import dev.lhs.charity_backend.enumeration.ErrorCode;
 import dev.lhs.charity_backend.exception.AppException;
+import dev.lhs.charity_backend.mapper.CampaignCommentMapper;
 import dev.lhs.charity_backend.mapper.CampaignContentBlockMapper;
 import dev.lhs.charity_backend.mapper.CampaignMapper;
-import dev.lhs.charity_backend.repository.CampaignContentBlockRepository;
-import dev.lhs.charity_backend.repository.CampaignRepository;
-import dev.lhs.charity_backend.repository.OrganizationRepository;
+import dev.lhs.charity_backend.repository.*;
 import dev.lhs.charity_backend.service.CampaignService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +26,9 @@ public class CampaignServiceImpl implements CampaignService {
     private final OrganizationRepository organizationRepository;
     private final CampaignContentBlockMapper campaignContentBlockMapper;
     private final CampaignContentBlockRepository campaignContentBlockRepository;
+    private final CampaignCommentMapper campaignCommentMapper;
+    private final UserRepository userRepository;
+    private final CampaignCommentRepository campaignCommentRepository;
 
     @Override
     public CampaignResponse create(CampaignRequest request) {
@@ -92,6 +89,37 @@ public class CampaignServiceImpl implements CampaignService {
         }
         campaign.setCampaignContentBlocks(array);
         return campaignMapper.toCampaignResponse(campaignRepository.save(campaign));
+    }
+
+    @Override
+    public CampaignCommentResponse createComment(Long campId, CampaignCommentRequest request) {
+        Campaign campaign = campaignRepository.findById(campId)
+                .orElseThrow(() -> new AppException(ErrorCode.CAMPAIGN_NOT_EXISTED));
+
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+
+        CampaignComment campaignComment = campaignCommentMapper.toCampaignComment(request);
+        campaignComment.setUser(user);
+        campaignComment.setCampaign(campaign);
+
+        return campaignCommentMapper
+                .toCampaignCommentResponse(campaignCommentRepository.save(campaignComment));
+    }
+
+    @Override
+    public List<CampaignCommentResponse> getCampaignComments(Long campId) {
+        return campaignCommentRepository.findAllByCampaign_Id(campId).stream()
+                .map(campaignCommentMapper::toCampaignCommentResponse).toList();
+    }
+
+    @Override
+    public String deleteComment(Long commentId) {
+        CampaignComment campaignComment = campaignCommentRepository.findById(commentId)
+                .orElseThrow(() -> new AppException(ErrorCode.COMMENT_NOT_EXISTED));
+
+        campaignCommentRepository.delete(campaignComment);
+        return "Comment has been deleted";
     }
 
 }

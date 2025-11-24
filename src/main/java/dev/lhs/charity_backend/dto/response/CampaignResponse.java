@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -13,18 +14,18 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CampaignResponse {
-
+    private String id;
     private String name;
     private String thumbnailUrl;
     private String description;
     private BigDecimal goalAmount;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private List<CampaignContentBlock> campaignContentBlocks;
-    private List<Skill> skills;
-    private List<Challenge> challenges;
+    private List<CampaignContentBlock> campaignContentBlocks = new ArrayList<>();
+    private List<Skill> skills = new ArrayList<>();
+    private List<Challenge> challenges = new ArrayList<>();
 //    private Organization organization;
     private Long organizationId;
-    private List<CampaignComment> campaignComments;
+    private List<CampaignComment> campaignComments = new ArrayList<>();
 
 }

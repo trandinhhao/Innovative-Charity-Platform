@@ -4,7 +4,7 @@ import dev.lhs.charity_backend.entity.CampaignContentBlock;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

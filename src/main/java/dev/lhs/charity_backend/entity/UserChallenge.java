@@ -14,15 +14,12 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table
+@Table(name = "user_challenges")
 public class UserChallenge {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "count", nullable = false)
-    private Long count;
 
     @Column(name = "proof_image_url", nullable = false)
     private String proofImageUrl;
@@ -31,11 +28,14 @@ public class UserChallenge {
     @CreatedDate
     private LocalDateTime submitTime;
 
-    @Column(name = "note", columnDefinition = "TEXT")
-    private String note;
+    @Column(name = "message", columnDefinition = "TEXT")
+    private String message;
 
     @Column(name = "status", nullable = false)
     private Integer status;
+
+    @Column(name = "is_match", nullable = false)
+    private Boolean isMatch;
 
     // 1 user - n user_challenge
     @ManyToOne

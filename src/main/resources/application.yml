@@ -23,7 +23,8 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+#      ddl-auto: none
+      ddl-auto: create-drop
     show_sql: true
     properties:
       hibernate.format_sql: true
@@ -40,8 +41,8 @@ logging:
 
 jwt:
   signerKey: ${SIGNER_KEY}
-  valid-duration: 3600 # in seconds
-  refreshable-duration: 36000 # in seconds
+  valid-duration: 360000 # in seconds
+  refreshable-duration: 3600000 # in seconds
 
 payos:
   payos-client-id : ${PAYOS_CLIENT_ID}

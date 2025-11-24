@@ -28,7 +28,6 @@ public class OrganizationServiceImpl implements OrganizationService {
         Organization organization = organizationMapper.toOrganization(request);
 
         organization.setCampaigns(new ArrayList<>());
-
         return organizationMapper.toOrganizationResponse(organizationRepository.save(organization));
     }
 

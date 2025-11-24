@@ -29,11 +29,8 @@ public class SkillAuction {
     @CreatedDate
     private LocalDateTime bidTime;
 
-    @Column(name = "note", columnDefinition = "TEXT")
-    private String note;
-
     @Column(name = "status", nullable = false)
-    private Integer status;
+    private Integer status = 1;
 
     // 1 user - n skill_auctions
     @ManyToOne

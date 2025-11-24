@@ -17,7 +17,7 @@ public class SkillCreationRequest {
     private String thumbnailUrl;
     private String description;
     private BigDecimal startingBid;
-    private BigDecimal stepBid;
+//    private BigDecimal stepBid;
     private BigDecimal targetBid;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
