@@ -1,0 +1,13 @@
+FROM rabbitmq:3-management
+
+# Cài đặt wget và curl để download plugin khi container start
+RUN apt-get update && \
+    apt-get install -y wget curl && \
+    rm -rf /var/lib/apt/lists/*
+
+# Copy custom entrypoint script
+COPY docker-entrypoint-rabbitmq.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint-rabbitmq.sh
+
+# Set custom entrypoint
+ENTRYPOINT ["docker-entrypoint-rabbitmq.sh"]

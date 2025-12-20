@@ -1,20 +1,29 @@
 package dev.lhs.charity_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import dev.lhs.charity_backend.enumeration.AuctionStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+/**
+ * Entity đại diện cho một phiên đấu giá kỹ năng (Auction Session)
+ * Mỗi Skill có thể có nhiều phiên đấu giá
+ */
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@EntityListeners(AuditingEntityListener.class) // de cho @CreatedDate hoat dong auto fill
+@EntityListeners(AuditingEntityListener.class)
 @Table(name = "skill_auctions")
 public class SkillAuction {
 
@@ -22,24 +31,77 @@ public class SkillAuction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "bid_amount", nullable = false, precision = 19, scale = 3)
-    private BigDecimal bidAmount;
+    @Column(name = "starting_bid", nullable = false, precision = 19, scale = 3)
+    private BigDecimal startingBid;
 
-    @Column(name = "bid_time", nullable = false, precision = 19, scale = 3)
-    @CreatedDate
-    private LocalDateTime bidTime;
+    @Column(name = "current_bid", nullable = false, precision = 19, scale = 3)
+    @Builder.Default
+    private BigDecimal currentBid = BigDecimal.ZERO;
 
+    @Column(name = "target_amount", precision = 19, scale = 3)
+    private BigDecimal targetAmount; // Optional
+
+    @Column(name = "start_time", nullable = false)
+    private LocalDateTime startTime;
+
+    @Column(name = "end_time", nullable = false)
+    private LocalDateTime endTime;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private Integer status = 1;
+    @Builder.Default
+    private AuctionStatus status = AuctionStatus.PENDING;
 
-    // 1 user - n skill_auctions
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @Column(name = "status_code", nullable = false)
+    @Builder.Default
+    private Integer statusCode = AuctionStatus.PENDING.getCode();
 
-    // n skill_auctions - 1 skill
-    @ManyToOne
+    @Column(name = "highest_bidder_id")
+    private Long highestBidderId; // ID của người đặt giá cao nhất hiện tại
+
+    @Column(name = "created_at", nullable = false)
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
+    // n skill_auctions - 1 skill (kỹ năng được đấu giá)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "skill_id", nullable = false)
+    @JsonIgnore
     private Skill skill;
 
+    // n skill_auctions - 1 user (skill owner - người cung cấp kỹ năng)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "skill_owner_id", nullable = false)
+    @JsonIgnore
+    private User skillOwner;
+
+    // n skill_auctions - 1 campaign (chiến dịch từ thiện nhận tiền)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "campaign_id", nullable = false)
+    @JsonIgnore
+    private Campaign campaign;
+
+    // 1 skill_auction - n bids (các lượt đặt giá)
+    @OneToMany(mappedBy = "skillAuction", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    @JsonIgnore
+    private List<Bid> bids = new ArrayList<>();
+
+    // 1 skill_auction - n transactions (giao dịch khi kết thúc)
+    @OneToMany(mappedBy = "skillAuction", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    @JsonIgnore
+    private List<Transaction> transactions = new ArrayList<>();
+
+    /**
+     * Helper method để sync status enum với statusCode
+     */
+    public void setStatus(AuctionStatus status) {
+        this.status = status;
+        this.statusCode = status.getCode();
+    }
 }

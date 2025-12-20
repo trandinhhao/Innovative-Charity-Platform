@@ -1,5 +1,6 @@
 package dev.lhs.charity_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -54,6 +55,7 @@ public class Campaign extends BaseEntity {
     // n campaign - 1 organization
     @ManyToOne
     @JoinColumn(name = "organization_id", nullable = false)
+    @JsonIgnore
     private Organization organization;
 
     // 1 campaign - n comment

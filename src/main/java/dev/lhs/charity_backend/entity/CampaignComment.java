@@ -1,5 +1,6 @@
 package dev.lhs.charity_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,10 +19,12 @@ public class CampaignComment extends BaseEntity {
     // n comments - 1 user
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     // n comments - 1 campaign
     @ManyToOne
     @JoinColumn(name = "campaign_id", nullable = false)
+    @JsonIgnore
     private Campaign campaign;
 }

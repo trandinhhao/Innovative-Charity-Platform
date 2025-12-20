@@ -8,13 +8,18 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface SkillAuctionMapper {
-    @Mapping(target = "user", ignore = true)
     @Mapping(target = "skill", ignore = true)
-    @Mapping(target = "status", ignore = true)
-    @Mapping(target = "bidTime", ignore = true)
+    @Mapping(target = "skillOwner", ignore = true)
+    @Mapping(target = "campaign", ignore = true)
+    @Mapping(target = "bids", ignore = true)
+    @Mapping(target = "transactions", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     SkillAuction toSkillAuction (SkillAuctionRequest request);
 
-    @Mapping(target = "userAucId", expression = "java(userAucId)")
     @Mapping(target = "skillId", source = "skillAuction.skill.id")
-    SkillAuctionResponse toSkillAuctionResponse (SkillAuction skillAuction, Long userAucId);
+    @Mapping(target = "skillOwnerId", source = "skillAuction.skillOwner.id")
+    @Mapping(target = "campaignId", source = "skillAuction.campaign.id")
+    SkillAuctionResponse toSkillAuctionResponse (SkillAuction skillAuction);
 }

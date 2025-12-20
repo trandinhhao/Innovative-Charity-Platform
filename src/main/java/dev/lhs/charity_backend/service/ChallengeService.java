@@ -13,4 +13,5 @@ public interface ChallengeService {
     ChallengeResponse getChallenge(Long challengeId);
     String deleteChallenge(Long challengeId);
     UserChallengeResponse submitProof(Long userId, Long challengeId, MultipartFile file);
+    UserChallengeResponse getVerificationStatus(Long userChallengeId);
 }

@@ -1,5 +1,6 @@
 package dev.lhs.charity_backend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -43,15 +44,18 @@ public class Skill extends BaseEntity {
 
     // skill - skill auc
     @OneToMany(mappedBy = "skill", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<SkillAuction> skillAuctions = new ArrayList<>();
 
     // user - skill
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     // n skill - 1 campaign
     @ManyToOne
     @JoinColumn(name = "campaign_id", nullable = false)
+    @JsonIgnore
     private Campaign campaign;
 }

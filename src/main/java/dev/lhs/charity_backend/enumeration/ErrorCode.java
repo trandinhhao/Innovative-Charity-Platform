@@ -29,7 +29,14 @@ public enum ErrorCode {
     CHALLENGE_NOT_EXISTED(1017, "Challenge not existed", HttpStatus.NOT_FOUND),
     COMMENT_NOT_EXISTED(1018, "Comment not existed", HttpStatus.NOT_FOUND),
 
-    IMAGE_UPLOAD_FAIL(1019, "Upload image fail!", HttpStatus.BAD_REQUEST)
+    IMAGE_UPLOAD_FAIL(1019, "Upload image fail!", HttpStatus.BAD_REQUEST),
+    
+    AUCTION_NOT_EXISTED(1020, "Auction not existed", HttpStatus.NOT_FOUND),
+    AUCTION_NOT_ACTIVE(1021, "Auction is not active", HttpStatus.BAD_REQUEST),
+    AUCTION_EXPIRED(1022, "Auction has expired", HttpStatus.BAD_REQUEST),
+    AUCTION_ALREADY_COMPLETED(1023, "Auction already completed", HttpStatus.BAD_REQUEST),
+    BID_AMOUNT_TOO_LOW(1024, "Bid amount must be greater than current bid", HttpStatus.BAD_REQUEST),
+    BID_SELF_OUTBID(1025, "You are already the highest bidder", HttpStatus.BAD_REQUEST)
     ;
 
     private final int code;

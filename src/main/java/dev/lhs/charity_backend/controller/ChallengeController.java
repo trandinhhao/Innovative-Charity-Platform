@@ -53,4 +53,11 @@ public class ChallengeController {
                 .result(challengeService.submitProof(userId, challengeId, file))
                 .build();
     }
+
+    @GetMapping("/verification/{userChallengeId}")
+    ApiResponse<UserChallengeResponse> getVerificationStatus(@PathVariable Long userChallengeId) {
+        return ApiResponse.<UserChallengeResponse>builder()
+                .result(challengeService.getVerificationStatus(userChallengeId))
+                .build();
+    }
 }

@@ -55,7 +55,7 @@ public class User extends BaseEntity {
     private Set<Role> roles = new HashSet<>();
     //----------------------
     // user - skill_auc
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "skillOwner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SkillAuction> skillAuctions = new ArrayList<>();
 
     // user - n skill

@@ -1,7 +1,5 @@
 package dev.lhs.charity_backend.controller.payment_payos;
 
-import java.util.Date;
-
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,9 +8,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import vn.payos.PayOS;
-import vn.payos.type.CheckoutResponseData;
-import vn.payos.type.ItemData;
-import vn.payos.type.PaymentData;
+import vn.payos.model.v2.paymentRequests.CreatePaymentLinkRequest;
+import vn.payos.model.v2.paymentRequests.CreatePaymentLinkResponse;
+import vn.payos.model.v2.paymentRequests.PaymentLinkItem;
 
 @Controller
 public class CheckoutController {
@@ -23,6 +21,9 @@ public class CheckoutController {
         this.payOS = payOS;
     }
 
+    // Commented out - These methods return Thymeleaf views, but this is a REST API backend
+    // Frontend should handle these routes instead
+    /*
     @RequestMapping(value = "/")
     public String Index() {
         return "index";
@@ -37,8 +38,12 @@ public class CheckoutController {
     public String Cancel() {
         return "cancel";
     }
+    */
 
-    @RequestMapping(method = RequestMethod.POST, value = "/create-payment-link", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @RequestMapping(
+            method = RequestMethod.POST,
+            value = "/create-payment-link",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public void checkout(HttpServletRequest request, HttpServletResponse httpServletResponse) {
         try {
             final String baseUrl = getBaseUrl(request);
@@ -46,14 +51,18 @@ public class CheckoutController {
             final String description = "Thanh toan don hang";
             final String returnUrl = baseUrl + "/success";
             final String cancelUrl = baseUrl + "/cancel";
-            final int price = 2000;
-            // Gen order code
-            String currentTimeString = String.valueOf(new Date().getTime());
-            long orderCode = Long.parseLong(currentTimeString.substring(currentTimeString.length() - 6));
-            ItemData item = ItemData.builder().name(productName).quantity(1).price(price).build();
-            PaymentData paymentData = PaymentData.builder().orderCode(orderCode).amount(price).description(description)
-                    .returnUrl(returnUrl).cancelUrl(cancelUrl).item(item).build();
-            CheckoutResponseData data = payOS.createPaymentLink(paymentData);
+            final long price = 2000;
+            final long orderCode = System.currentTimeMillis() / 1000;
+            CreatePaymentLinkRequest paymentData =
+                    CreatePaymentLinkRequest.builder()
+                            .orderCode(orderCode)
+                            .amount(price)
+                            .description(description)
+                            .returnUrl(returnUrl)
+                            .cancelUrl(cancelUrl)
+                            .item(PaymentLinkItem.builder().name(productName).price(price).quantity(1).build())
+                            .build();
+            CreatePaymentLinkResponse data = payOS.paymentRequests().create(paymentData);
 
             String checkoutUrl = data.getCheckoutUrl();
 
@@ -61,6 +70,7 @@ public class CheckoutController {
             httpServletResponse.setStatus(302);
         } catch (Exception e) {
             e.printStackTrace();
+            httpServletResponse.setStatus(500);
         }
     }
 
@@ -71,7 +81,8 @@ public class CheckoutController {
         String contextPath = request.getContextPath();
 
         String url = scheme + "://" + serverName;
-        if ((scheme.equals("http") && serverPort != 80) || (scheme.equals("https") && serverPort != 443)) {
+        if ((scheme.equals("http") && serverPort != 80)
+                || (scheme.equals("https") && serverPort != 443)) {
             url += ":" + serverPort;
         }
         url += contextPath;

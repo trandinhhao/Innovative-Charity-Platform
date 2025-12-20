@@ -37,6 +37,7 @@ public class ChallengeServiceImpl implements ChallengeService {
     private final ImageService imageService;
     private final ChatService chatService;
     private final UserChallengeRepository userChallengeRepository;
+    private final dev.lhs.charity_backend.service.EvidenceVerificationService evidenceVerificationService;
 
     @Override
     public ChallengeResponse createChallenge(Long userId, ChallengeCreationRequest request) {
@@ -78,25 +79,32 @@ public class ChallengeServiceImpl implements ChallengeService {
 
     @Override
     public UserChallengeResponse submitProof(Long userId, Long challengeId, MultipartFile file) {
-        String secure_url = imageService.uploadImage(file);
-
+        // Validate user and challenge
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new AppException(ErrorCode.CHALLENGE_NOT_EXISTED));
 
-        UserSubmitResponse response = chatService.checkSubmitProof(file, challenge.getDescription());
+        // Sử dụng EvidenceVerificationService với async processing
+        // Trả về ngay với status PROCESSING
+//        evidenceVerificationService.verifyEvidenceAsync(user, challenge, file);
 
-        UserChallenge userChallenge = UserChallenge.builder()
-                .proofImageUrl(secure_url)
-                .message(response.getMessage())
-                .user(user)
-                .challenge(challenge)
-                .status(1)
-                .isMatch(response.getIsMatch().equals("YES") ? true : false)
-                .build();
+        // Tạo UserChallenge tạm thời với status PROCESSING để trả về ngay
+        // (Thực tế UserChallenge đã được tạo trong verifyEvidenceAsync, nhưng để đảm bảo response nhanh,
+        // ta có thể query lại hoặc tạo một response riêng)
+        // Tuy nhiên, để đơn giản, ta sẽ đợi một chút để có UserChallenge ID
+        
+        // Tạm thời: gọi sync để có kết quả ngay (có thể thay bằng cách khác tốt hơn)
+        // Trong production, nên trả về ngay với status PROCESSING và client poll status
+        UserChallenge userChallenge = evidenceVerificationService.verifyEvidence(user, challenge, file);
 
-        return challengeMapper.toUserChallengeResponse(userChallengeRepository.save(userChallenge));
+        return challengeMapper.toUserChallengeResponse(userChallenge);
+    }
+
+    @Override
+    public UserChallengeResponse getVerificationStatus(Long userChallengeId) {
+        UserChallenge userChallenge = evidenceVerificationService.getVerificationStatus(userChallengeId);
+        return challengeMapper.toUserChallengeResponse(userChallenge);
     }
 }

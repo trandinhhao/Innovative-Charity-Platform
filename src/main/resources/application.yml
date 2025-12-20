@@ -9,14 +9,21 @@ spring:
         completions-path: /chat/completions
         options:
           modal: openai/gpt-4o-mini
+          # Cấu hình cho Evidence Verification (ưu tiên tính ổn định + nhất quán)
+          temperature: 0.0  # Độ ổn định cao, không sáng tạo
+          max-tokens: 2000  # Đủ cho JSON response chi tiết
+          timeout: 30s      # Timeout cho AI call (mục tiêu < 15s)
     chat:
       memory:
         repository:
           jdbc:
             initialize-schema: always
 
+  config:
+    import: optional:dotenv:./.env
+
   datasource:
-    url: ${DBMS_CONNECTION:jdbc:mysql://localhost:3306/charity_platform}
+    url: ${DBMS_CONNECTION:jdbc:mysql://localhost:3307/charity_platform}
     username: ${DBMS_USERNAME:root}
     password: ${DBMS_PASSWORD:root}
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -24,10 +31,31 @@ spring:
   jpa:
     hibernate:
 #      ddl-auto: none
-      ddl-auto: create-drop
+      ddl-auto: none
     show_sql: true
     properties:
       hibernate.format_sql: true
+
+  # Redis Configuration
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:}
+      timeout: 2000ms
+
+  # RabbitMQ Configuration
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+
+  servlet:
+    multipart:
+      max-file-size: 10MB      # Từng file tối đa
+      max-request-size: 10MB   # Toàn request
+      enabled: true
 
 server:
   port: 8080
@@ -41,10 +69,22 @@ logging:
 
 jwt:
   signerKey: ${SIGNER_KEY}
-  valid-duration: 360000 # in seconds
-  refreshable-duration: 3600000 # in seconds
+  valid-duration: 36000000 # in seconds
+  refreshable-duration: 360000000 # in seconds
 
 payos:
   payos-client-id : ${PAYOS_CLIENT_ID}
   payos-api-key : ${PAYOS_API_KEY}
   payos-checksum-key : ${PAYOS_CHECKSUM_KEY}
+
+# Custom RabbitMQ Configuration (for our custom exchanges/queues)
+rabbitmq:
+  exchange:
+    bid: bid.exchange
+    finalization: finalization.exchange
+  queue:
+    bid: bid.queue
+    finalization: finalization.queue
+  routing-key:
+    bid: bid.routing.key
+    finalization: finalization.routing.key

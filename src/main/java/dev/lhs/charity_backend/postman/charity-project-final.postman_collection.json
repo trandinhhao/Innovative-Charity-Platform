@@ -1,0 +1,665 @@
+{
+	"info": {
+		"_postman_id": "15c0e263-acf7-4fff-8589-239eb3cf33f4",
+		"name": "charity-project-final",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "41011503"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "create user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"haodinhtran05\",\r\n    \"password\": \"1234567805\",\r\n    \"dob\": \"2004-12-23\",\r\n    \"email\": \"haodinhtran05@gmail.com\",\r\n    \"phoneNumber\": \"0123456705\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrlV1}}/users",
+							"host": [
+								"{{baseUrlV1}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "typeCode",
+									"value": "tang-tret",
+									"disabled": true
+								},
+								{
+									"key": "typeCode",
+									"value": "noi-that",
+									"disabled": true
+								},
+								{
+									"key": "typeCode",
+									"value": "nguyen-can",
+									"disabled": true
+								},
+								{
+									"key": "districtId",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "rentPriceFrom",
+									"value": "15",
+									"disabled": true
+								},
+								{
+									"key": "rentPriceTo",
+									"value": null,
+									"disabled": true
+								},
+								{
+									"key": "staffId",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "name",
+									"value": "building",
+									"disabled": true
+								},
+								{
+									"key": "areaFrom",
+									"value": "200",
+									"disabled": true
+								},
+								{
+									"key": "areaTo",
+									"value": "500",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get users (ad)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTc2NDQ4ODE5MiwiaWF0IjoxNzY0MTI4MTkyLCJqdGkiOiI5NTg5M2VlYy0wZWE2LTRkMDktOTEzYS0zZTFmYzcxNWY5NjMifQ.cbpGmBoIU1ePeOSkOB-237JYGFyDHrJCyeN4H0DbnnddjdLsYLR831kveyA_DOYOmSoetSKSMJFe9xwklM19hA"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrlV1}}/users"
+					},
+					"response": []
+				},
+				{
+					"name": "get 1 user (ad)",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTc2NDQ4ODE5MiwiaWF0IjoxNzY0MTI4MTkyLCJqdGkiOiI5NTg5M2VlYy0wZWE2LTRkMDktOTEzYS0zZTFmYzcxNWY5NjMifQ.cbpGmBoIU1ePeOSkOB-237JYGFyDHrJCyeN4H0DbnnddjdLsYLR831kveyA_DOYOmSoetSKSMJFe9xwklM19hA"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrlV1}}/users/3"
+					},
+					"response": []
+				},
+				{
+					"name": "my-info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTgwMDEyOTQ4NywiaWF0IjoxNzY0MTI5NDg3LCJqdGkiOiJkMTdlMjY3OS0xNGRkLTRjM2YtYTNjNi1jZTY0YTcxMmMxOWMifQ.ni8Fs51zK8vd73rJRY0bqp7X0dnL2lh2J1yKnHHCM_aJfy1z2Q52gkAn6pbLfG3dI9EOBll_dzmeS8kc3ZSLcQ"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrlV1}}/users/my-info"
+					},
+					"response": []
+				},
+				{
+					"name": "delete user (ad)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTgwMDEyOTQ4NywiaWF0IjoxNzY0MTI5NDg3LCJqdGkiOiJkMTdlMjY3OS0xNGRkLTRjM2YtYTNjNi1jZTY0YTcxMmMxOWMifQ.ni8Fs51zK8vd73rJRY0bqp7X0dnL2lh2J1yKnHHCM_aJfy1z2Q52gkAn6pbLfG3dI9EOBll_dzmeS8kc3ZSLcQ"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseUrlV1}}/users/200"
+					},
+					"response": []
+				},
+				{
+					"name": "update user",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTc2NDQ4ODE5MiwiaWF0IjoxNzY0MTI4MTkyLCJqdGkiOiI5NTg5M2VlYy0wZWE2LTRkMDktOTEzYS0zZTFmYzcxNWY5NjMifQ.cbpGmBoIU1ePeOSkOB-237JYGFyDHrJCyeN4H0DbnnddjdLsYLR831kveyA_DOYOmSoetSKSMJFe9xwklM19hA"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"password\": \"12333333333\",\r\n    \"dob\": \"2004-12-23\",\r\n    \"email\": \"alo@gmail.com\",\r\n    \"phoneNumber\": \"0123456710\",\r\n    \"address\" : \"67H2 Nguyễn Công Trứ, HBT, HN\",\r\n    \"avatarUrl\" : \"test_url\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrlV1}}/users/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "login and token",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\" : \"admin\",\r\n    \"password\" : \"admin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrlV1}}/auth/token"
+					},
+					"response": []
+				},
+				{
+					"name": "introspect",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": ""
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\" : \"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTgwMDEyOTQ4NywiaWF0IjoxNzY0MTI5NDg3LCJqdGkiOiJkMTdlMjY3OS0xNGRkLTRjM2YtYTNjNi1jZTY0YTcxMmMxOWMifQ.ni8Fs51zK8vd73rJRY0bqp7X0dnL2lh2J1yKnHHCM_aJfy1z2Q52gkAn6pbLfG3dI9EOBll_dzmeS8kc3ZSLcQ\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrlV1}}/auth/introspect"
+					},
+					"response": []
+				},
+				{
+					"name": "refresh token",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\" : \"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTc2MDE3OTkwNiwiaWF0IjoxNzYwMTc2MzA2LCJqdGkiOiI5NzlkYmQ5OS04YWRiLTQ2ZTItYThhNy03MWUxYTQ2YzQwMGYifQ.PZnkmI2pGw4Jtwke-nt5L53u1zVfA1_zv039wVGF8FqfiFHOtCTf2sxCCSx6vVJPKvk9HBFLNBlUcwpHnkuEKA\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrlV1}}/auth/refresh"
+					},
+					"response": []
+				},
+				{
+					"name": "logout token",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJoYW9kaW5odHJhbjAyIiwic2NvcGUiOiJST0xFX1VTRVIiLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTc2NDQ4ODE3MywiaWF0IjoxNzY0MTI4MTczLCJqdGkiOiJmOTAyNDg0My00MzMwLTRmYzAtYWM0Yi03ZjQ1MDMzMzFlYTAifQ.axpR49rFd0EaxjYemUZSSJfQ-PJYoeSDT0wclCcvk3jm9IGgescekTmt_wiqvrpcQZhvf5SFAT4XRHB1oOr4oQ"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"token\" : \"eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTc2MDE3OTgyOCwiaWF0IjoxNzYwMTc2MjI4LCJqdGkiOiI5MDYxYjAzMS01OWNiLTRlMDYtYTI0NS02YWQ5MGU2MDJmMTQifQ.j32LW5Q3fVkYiBn2H0SRPorHv_6Fa3qlKXx3fayjFwqlPQZG-ZuP4vRNclL5qfFPOF7BL-V_3kWi0AUQs_8ptw\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrlV1}}/auth/logout"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "org",
+			"item": [
+				{
+					"name": "create (AD)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTgwMDEyOTQ4NywiaWF0IjoxNzY0MTI5NDg3LCJqdGkiOiJkMTdlMjY3OS0xNGRkLTRjM2YtYTNjNi1jZTY0YTcxMmMxOWMifQ.ni8Fs51zK8vd73rJRY0bqp7X0dnL2lh2J1yKnHHCM_aJfy1z2Q52gkAn6pbLfG3dI9EOBll_dzmeS8kc3ZSLcQ"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Quỹ Vì Tầm Vóc Việt\",\r\n    \"description\": \"Cải thiện dinh dưỡng học đường và phát triển thể lực, trí lực cho trẻ em Việt Nam.\",\r\n    \"avatarUrl\": \"https://example.com/images/tam-voc-viet.png\",\r\n    \"email\": \"contact@vitamvocviet.vn\",\r\n    \"phoneNumber\": \"+84 24 3942 9999\",\r\n    \"address\": \"Tầng 5, Tòa nhà BAC A BANK, 09 Đào Duy Anh, Đống Đa, Hà Nội, Việt Nam\"\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrlV1}}/organizations"
+					},
+					"response": []
+				},
+				{
+					"name": "orgs",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTgwMDEyOTQ4NywiaWF0IjoxNzY0MTI5NDg3LCJqdGkiOiJkMTdlMjY3OS0xNGRkLTRjM2YtYTNjNi1jZTY0YTcxMmMxOWMifQ.ni8Fs51zK8vd73rJRY0bqp7X0dnL2lh2J1yKnHHCM_aJfy1z2Q52gkAn6pbLfG3dI9EOBll_dzmeS8kc3ZSLcQ"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrlV1}}/organizations"
+					},
+					"response": []
+				},
+				{
+					"name": "orgId",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTgwMDEyOTQ4NywiaWF0IjoxNzY0MTI5NDg3LCJqdGkiOiJkMTdlMjY3OS0xNGRkLTRjM2YtYTNjNi1jZTY0YTcxMmMxOWMifQ.ni8Fs51zK8vd73rJRY0bqp7X0dnL2lh2J1yKnHHCM_aJfy1z2Q52gkAn6pbLfG3dI9EOBll_dzmeS8kc3ZSLcQ"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrlV1}}/organizations/2"
+					},
+					"response": []
+				},
+				{
+					"name": "delete (AD)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTgwMDEyOTQ4NywiaWF0IjoxNzY0MTI5NDg3LCJqdGkiOiJkMTdlMjY3OS0xNGRkLTRjM2YtYTNjNi1jZTY0YTcxMmMxOWMifQ.ni8Fs51zK8vd73rJRY0bqp7X0dnL2lh2J1yKnHHCM_aJfy1z2Q52gkAn6pbLfG3dI9EOBll_dzmeS8kc3ZSLcQ"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseUrlV1}}/organizations/1"
+					},
+					"response": []
+				},
+				{
+					"name": "update (AD)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTgwMDEyOTQ4NywiaWF0IjoxNzY0MTI5NDg3LCJqdGkiOiJkMTdlMjY3OS0xNGRkLTRjM2YtYTNjNi1jZTY0YTcxMmMxOWMifQ.ni8Fs51zK8vd73rJRY0bqp7X0dnL2lh2J1yKnHHCM_aJfy1z2Q52gkAn6pbLfG3dI9EOBll_dzmeS8kc3ZSLcQ"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Red Cross Vietnam\",\r\n    \"description\": \"An organization providing humanitarian aid and disaster relief.\",\r\n    \"avatarUrl\": \"https://example.com/images/red-cross.png\",\r\n    \"email\": \"contact1@redcross.vn\",\r\n    \"phoneNumber\": \"+84 123 456 788\",\r\n    \"address\": \"82 Nguyen Chi Thanh, Hanoi, Vietnam\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrlV1}}/organizations/2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "camp",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTgwMDEyOTQ4NywiaWF0IjoxNzY0MTI5NDg3LCJqdGkiOiJkMTdlMjY3OS0xNGRkLTRjM2YtYTNjNi1jZTY0YTcxMmMxOWMifQ.ni8Fs51zK8vd73rJRY0bqp7X0dnL2lh2J1yKnHHCM_aJfy1z2Q52gkAn6pbLfG3dI9EOBll_dzmeS8kc3ZSLcQ"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Tủ thuốc biên cương\",\r\n    \"thumbnailUrl\": \"https://example.com/thumb/medicine.jpg\",\r\n    \"description\": \"Cung cấp tủ thuốc y tế cơ bản cho các đồn biên phòng và trạm y tế xã.\",\r\n    \"goalAmount\": 200000000,\r\n    \"startDate\": \"2025-12-01T00:00:00\",\r\n    \"endDate\": \"2026-02-28T23:59:59\",\r\n    \"orgId\": 3,\r\n    \"campaignContentBlocks\": [\r\n      {\r\n        \"contentType\": \"TEXT_TYPE\",\r\n        \"content\": \"Các trạm y tế vùng biên giới thường xuyên thiếu thuốc men cơ bản.\",\r\n        \"position\": 1\r\n      },\r\n      {\r\n        \"contentType\": \"IMAGE_TYPE\",\r\n        \"content\": \"https://example.com/img/tram-y-te.jpg\",\r\n        \"position\": 2\r\n      },\r\n      {\r\n        \"contentType\": \"TEXT_TYPE\",\r\n        \"content\": \"Dự án sẽ cung cấp 50 tủ thuốc với đầy đủ thuốc cảm, sốt, sơ cứu...\",\r\n        \"position\": 3\r\n      },\r\n      {\r\n        \"contentType\": \"IMAGE_TYPE\",\r\n        \"content\": \"https://example.com/img/tu-thuoc.jpg\",\r\n        \"position\": 4\r\n      }\r\n    ]\r\n  }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrlV1}}/campaigns"
+					},
+					"response": []
+				},
+				{
+					"name": "getCampaigns",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTgwMDEyOTQ4NywiaWF0IjoxNzY0MTI5NDg3LCJqdGkiOiJkMTdlMjY3OS0xNGRkLTRjM2YtYTNjNi1jZTY0YTcxMmMxOWMifQ.ni8Fs51zK8vd73rJRY0bqp7X0dnL2lh2J1yKnHHCM_aJfy1z2Q52gkAn6pbLfG3dI9EOBll_dzmeS8kc3ZSLcQ"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrlV1}}/campaigns"
+					},
+					"response": []
+				},
+				{
+					"name": "getCampaign",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTgwMDEyOTQ4NywiaWF0IjoxNzY0MTI5NDg3LCJqdGkiOiJkMTdlMjY3OS0xNGRkLTRjM2YtYTNjNi1jZTY0YTcxMmMxOWMifQ.ni8Fs51zK8vd73rJRY0bqp7X0dnL2lh2J1yKnHHCM_aJfy1z2Q52gkAn6pbLfG3dI9EOBll_dzmeS8kc3ZSLcQ"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrlV1}}/campaigns/2"
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTgwMDEyOTQ4NywiaWF0IjoxNzY0MTI5NDg3LCJqdGkiOiJkMTdlMjY3OS0xNGRkLTRjM2YtYTNjNi1jZTY0YTcxMmMxOWMifQ.ni8Fs51zK8vd73rJRY0bqp7X0dnL2lh2J1yKnHHCM_aJfy1z2Q52gkAn6pbLfG3dI9EOBll_dzmeS8kc3ZSLcQ"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{baseUrlV1}}/campaigns/2"
+					},
+					"response": []
+				},
+				{
+					"name": "update (lỗi)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9BRE1JTiBST0xFX1VTRVIiLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTc2MDE5MjQ3OCwiaWF0IjoxNzYwMTg4ODc4LCJqdGkiOiJkOWZmMGRkMC04NTBhLTQzMWUtYmU3YS1kNmY4YjgwYTNjNjMifQ.hLRZ0zQrnTiIVQJ_OekM7E_1Ll1dTGf5x9Lx61p8OP7-hvsmyei0GqgGLrTc8P_JOVnjZvCr5LMjrIWYTmwkNw"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Qqqquyên góp xây dựng trường học vùng caooo\",\r\n  \"thumbnailUrl\": \"https://example.com/thumbnail.jpg\",\r\n  \"description\": \"Ccccchiến dịch nhằm hỗ trợ xây dựng trường học cho trẻ em vùng cao....\",\r\n  \"goalAmount\": 500000000,\r\n  \"startDate\": \"2025-09-20T00:00:00\",\r\n  \"endDate\": \"2025-12-31T23:59:59\",\r\n  \"orgId\": 1,\r\n  \"campaignContentBlocks\": [\r\n    {\r\n      \"id\": 1,\r\n      \"contentType\": \"TEXT_TYPE\",\r\n      \"content\": \"Trrường học hiện tại đã xuống cấp trầm trọng, không đủ chỗ học cho các em.\",\r\n      \"position\": 1\r\n    },\r\n    {\r\n      \"id\": 2,\r\n      \"contentType\": \"IMAGE_TYPE\",\r\n      \"content\": \"https://example.com/image1.jpg\",\r\n      \"position\": 2\r\n    },\r\n    {\r\n      \"id\": 3,\r\n      \"contentType\": \"TEXT_TYPE\",\r\n      \"content\": \"Mục tiêu là xây dựng 10 phòng học mới, khang trang, an toàn cho trẻ em.\",\r\n      \"position\": 3\r\n    },\r\n    {\r\n      \"id\": 4,\r\n      \"contentType\": \"IMAGE_TYPE\",\r\n      \"content\": \"https://example.com/image2.jpg\",\r\n      \"position\": 4\r\n    }\r\n  ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrlV1}}/campaigns/2"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "images",
+			"item": [
+				{
+					"name": "convert",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTgwMDEyOTQ4NywiaWF0IjoxNzY0MTI5NDg3LCJqdGkiOiJkMTdlMjY3OS0xNGRkLTRjM2YtYTNjNi1jZTY0YTcxMmMxOWMifQ.ni8Fs51zK8vd73rJRY0bqp7X0dnL2lh2J1yKnHHCM_aJfy1z2Q52gkAn6pbLfG3dI9EOBll_dzmeS8kc3ZSLcQ"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/D:/Tải xuống/images.jpg"
+								}
+							]
+						},
+						"url": "{{baseUrlV1}}/images/upload"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "chat",
+			"item": [
+				{
+					"name": "chat",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTgwMDEyOTQ4NywiaWF0IjoxNzY0MTI5NDg3LCJqdGkiOiJkMTdlMjY3OS0xNGRkLTRjM2YtYTNjNi1jZTY0YTcxMmMxOWMifQ.ni8Fs51zK8vd73rJRY0bqp7X0dnL2lh2J1yKnHHCM_aJfy1z2Q52gkAn6pbLfG3dI9EOBll_dzmeS8kc3ZSLcQ"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"message\" : \"Bạn có thể nhắc lại tôi tên là gì không ?\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrlV1}}/chat"
+					},
+					"response": []
+				},
+				{
+					"name": "chat-img (thừa log)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTgwMDEyOTQ4NywiaWF0IjoxNzY0MTI5NDg3LCJqdGkiOiJkMTdlMjY3OS0xNGRkLTRjM2YtYTNjNi1jZTY0YTcxMmMxOWMifQ.ni8Fs51zK8vd73rJRY0bqp7X0dnL2lh2J1yKnHHCM_aJfy1z2Q52gkAn6pbLfG3dI9EOBll_dzmeS8kc3ZSLcQ"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/D:/Tải xuống/images.jpg"
+								},
+								{
+									"key": "message",
+									"value": "Bức ảnh này diễn tả điều gì ?",
+									"type": "text"
+								}
+							]
+						},
+						"url": "{{baseUrlV1}}/chat-with-image"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "payment",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTgwMDEyOTQ4NywiaWF0IjoxNzY0MTI5NDg3LCJqdGkiOiJkMTdlMjY3OS0xNGRkLTRjM2YtYTNjNi1jZTY0YTcxMmMxOWMifQ.ni8Fs51zK8vd73rJRY0bqp7X0dnL2lh2J1yKnHHCM_aJfy1z2Q52gkAn6pbLfG3dI9EOBll_dzmeS8kc3ZSLcQ"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-client-id",
+								"value": "da39b599-4218-4978-9671-14e727b1b465",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "x-api-key",
+								"value": "8817dff5-5c70-4a9f-b610-228d22a22019",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"productName\": \"Mì tôm Hảo Hảo\",\r\n  \"description\": \"Thanh toán đơn hàng A\",\r\n  \"returnUrl\": \"http://localhost:3000/payment-success\",\r\n  \"cancelUrl\": \"http://localhost:3000/payment-cancel\",\r\n  \"price\": 2000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{baseUrlV1}}/order/create"
+					},
+					"response": []
+				},
+				{
+					"name": "check",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTgwMDEyOTQ4NywiaWF0IjoxNzY0MTI5NDg3LCJqdGkiOiJkMTdlMjY3OS0xNGRkLTRjM2YtYTNjNi1jZTY0YTcxMmMxOWMifQ.ni8Fs51zK8vd73rJRY0bqp7X0dnL2lh2J1yKnHHCM_aJfy1z2Q52gkAn6pbLfG3dI9EOBll_dzmeS8kc3ZSLcQ"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{baseUrlV1}}/order/1764180069"
+					},
+					"response": []
+				},
+				{
+					"name": "hủy đơn",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsInNjb3BlIjoiUk9MRV9VU0VSIFJPTEVfQURNSU4iLCJpc3MiOiJpbm5vdmF0aXZlY2hhcml0eXBsYXRmb3JtLmNvbSIsImV4cCI6MTgwMDEyOTQ4NywiaWF0IjoxNzY0MTI5NDg3LCJqdGkiOiJkMTdlMjY3OS0xNGRkLTRjM2YtYTNjNi1jZTY0YTcxMmMxOWMifQ.ni8Fs51zK8vd73rJRY0bqp7X0dnL2lh2J1yKnHHCM_aJfy1z2Q52gkAn6pbLfG3dI9EOBll_dzmeS8kc3ZSLcQ"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"url": "{{baseUrlV1}}/order/1764180069"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
