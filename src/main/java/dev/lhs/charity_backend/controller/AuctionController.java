@@ -190,5 +190,34 @@ public class AuctionController {
                 .result(bidResponses)
                 .build();
     }
+
+    /**
+     * Lấy lịch sử đấu giá của một user (tất cả bids của user đó)
+     */
+    @GetMapping("/history/{userId}")
+    ApiResponse<List<BidResponse>> getUserBidHistory(@PathVariable Long userId) {
+        List<Bid> userBids = bidRepository.findAllBidsByUserIdOrderByBidTimeDesc(userId);
+        
+        List<BidResponse> bidResponses = userBids.stream()
+                .map(bid -> {
+                    SkillAuction auction = bid.getSkillAuction();
+                    Long highestBidderId = auction != null ? auction.getHighestBidderId() : null;
+                    
+                    return BidResponse.builder()
+                            .id(bid.getId())
+                            .bidAmount(bid.getBidAmount())
+                            .bidTime(bid.getBidTime())
+                            .bidderId(bid.getBidder().getId())
+                            .bidderUsername(bid.getBidder().getUsername())
+                            .auctionId(auction != null ? auction.getId() : null)
+                            .isHighestBid(highestBidderId != null && highestBidderId.equals(userId))
+                            .build();
+                })
+                .collect(Collectors.toList());
+        
+        return ApiResponse.<List<BidResponse>>builder()
+                .result(bidResponses)
+                .build();
+    }
 }
 

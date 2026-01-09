@@ -1,5 +1,6 @@
 package dev.lhs.charity_backend.controller;
 
+import dev.lhs.charity_backend.dto.request.CreateAuctionAndBidRequest;
 import dev.lhs.charity_backend.dto.request.SkillCreationRequest;
 import dev.lhs.charity_backend.dto.response.ApiResponse;
 import dev.lhs.charity_backend.dto.response.SkillAuctionResponse;
@@ -54,6 +55,17 @@ public class SkillController {
                                                @RequestBody BigDecimal bidAmount) {
         return ApiResponse.<SkillAuctionResponse>builder()
                 .result(skillService.auction(userId, skillId, bidAmount))
+                .build();
+    }
+    
+    /**
+     * Tạo SkillAuction và đặt giá sau khi thanh toán PayOS thành công
+     * Frontend gửi: userId, skillId, bidAmount (đơn vị nghìn)
+     */
+    @PostMapping("/create-auction-and-bid")
+    ApiResponse<SkillAuctionResponse> createAuctionAndBid(@RequestBody CreateAuctionAndBidRequest request) {
+        return ApiResponse.<SkillAuctionResponse>builder()
+                .result(skillService.createAuctionAndBid(request.getUserId(), request.getSkillId(), request.getBidAmount()))
                 .build();
     }
 }

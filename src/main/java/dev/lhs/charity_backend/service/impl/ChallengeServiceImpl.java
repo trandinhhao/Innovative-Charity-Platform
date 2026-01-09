@@ -9,6 +9,7 @@ import dev.lhs.charity_backend.entity.Challenge;
 import dev.lhs.charity_backend.entity.User;
 import dev.lhs.charity_backend.entity.UserChallenge;
 import dev.lhs.charity_backend.enumeration.ErrorCode;
+import dev.lhs.charity_backend.enumeration.VerificationStatus;
 import dev.lhs.charity_backend.exception.AppException;
 import dev.lhs.charity_backend.mapper.ChallengeMapper;
 import dev.lhs.charity_backend.repository.CampaignRepository;
@@ -59,14 +60,41 @@ public class ChallengeServiceImpl implements ChallengeService {
     @Override
     public List<ChallengeResponse> getChallenges() {
         return challengeRepository.findAll()
-                .stream().map(challengeMapper::toChallengeResponse).toList();
+                .stream()
+                .map(challenge -> {
+                    ChallengeResponse response = challengeMapper.toChallengeResponse(challenge);
+                    calculateCurrentAmount(response, challenge);
+                    return response;
+                })
+                .toList();
     }
 
     @Override
     public ChallengeResponse getChallenge(Long challengeId) {
         if (challengeRepository.existsById(challengeId)) {
-            return challengeMapper.toChallengeResponse(challengeRepository.findChallengeById(challengeId));
+            Challenge challenge = challengeRepository.findChallengeById(challengeId);
+            ChallengeResponse response = challengeMapper.toChallengeResponse(challenge);
+            calculateCurrentAmount(response, challenge);
+            return response;
         } else throw new AppException(ErrorCode.CHALLENGE_NOT_EXISTED);
+    }
+
+    /**
+     * Tính currentAmount dựa trên số lượng userChallenges đã được APPROVED
+     * currentAmount = số lượng APPROVED * unitAmount
+     */
+    private void calculateCurrentAmount(ChallengeResponse response, Challenge challenge) {
+        if (challenge.getUserChallenges() == null || challenge.getUnitAmount() == null) {
+            response.setCurrentAmount(BigDecimal.ZERO);
+            return;
+        }
+
+        long approvedCount = challenge.getUserChallenges().stream()
+                .filter(uc -> uc.getVerificationStatus() == VerificationStatus.APPROVED)
+                .count();
+
+        BigDecimal currentAmount = challenge.getUnitAmount().multiply(BigDecimal.valueOf(approvedCount));
+        response.setCurrentAmount(currentAmount);
     }
 
     @Override
@@ -106,5 +134,18 @@ public class ChallengeServiceImpl implements ChallengeService {
     public UserChallengeResponse getVerificationStatus(Long userChallengeId) {
         UserChallenge userChallenge = evidenceVerificationService.getVerificationStatus(userChallengeId);
         return challengeMapper.toUserChallengeResponse(userChallenge);
+    }
+
+    @Override
+    public List<UserChallengeResponse> getUserChallengeHistory(Long userId) {
+        // Validate user exists
+        if (!userRepository.existsById(userId)) {
+            throw new AppException(ErrorCode.USER_NOT_EXISTED);
+        }
+        
+        List<UserChallenge> userChallenges = userChallengeRepository.findAllByUserIdOrderBySubmitTimeDesc(userId);
+        return userChallenges.stream()
+                .map(challengeMapper::toUserChallengeResponse)
+                .toList();
     }
 }

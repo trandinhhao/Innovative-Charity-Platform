@@ -13,5 +13,10 @@ public interface SkillService {
     SkillResponse getSkill(Long skillId);
     String deleteSkill(Long skillId);
     SkillAuctionResponse auction(Long userId, Long skillId, BigDecimal bidAmount);
-
+    
+    /**
+     * Tạo SkillAuction và đặt giá sau khi thanh toán PayOS thành công
+     * Nếu SkillAuction chưa có thì tạo mới, sau đó cập nhật bidAmount
+     */
+    SkillAuctionResponse createAuctionAndBid(Long userId, Long skillId, BigDecimal bidAmount);
 }

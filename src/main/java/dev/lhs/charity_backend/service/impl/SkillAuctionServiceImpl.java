@@ -59,14 +59,13 @@ public class SkillAuctionServiceImpl implements SkillAuctionService {
         
         // Validate time
         LocalDateTime now = LocalDateTime.now();
-        if (request.getStartTime().isBefore(now)) {
-            throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION); // TODO: Add specific error
-        }
+        // Cho phép startTime trong quá khứ (sẽ set status = ACTIVE)
         if (request.getEndTime().isBefore(request.getStartTime())) {
+            log.error("EndTime is before StartTime: startTime={}, endTime={}", request.getStartTime(), request.getEndTime());
             throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION); // TODO: Add specific error
         }
         
-        // Determine initial status
+        // Determine initial status: nếu startTime <= now thì ACTIVE, ngược lại PENDING
         AuctionStatus initialStatus = request.getStartTime().isAfter(now) 
                 ? AuctionStatus.PENDING 
                 : AuctionStatus.ACTIVE;

@@ -28,5 +28,11 @@ public interface BidRepository extends JpaRepository<Bid, Long> {
      */
     @Query("SELECT b FROM Bid b WHERE b.skillAuction.id = :auctionId ORDER BY b.bidAmount DESC, b.bidTime ASC")
     List<Bid> findAllBidsByAuctionId(@Param("auctionId") Long auctionId);
+    
+    /**
+     * Tìm tất cả bids của một user, sắp xếp theo bidTime DESC (mới nhất trước)
+     */
+    @Query("SELECT b FROM Bid b WHERE b.bidder.id = :userId ORDER BY b.bidTime DESC")
+    List<Bid> findAllBidsByUserIdOrderByBidTimeDesc(@Param("userId") Long userId);
 }
 

@@ -60,4 +60,11 @@ public class ChallengeController {
                 .result(challengeService.getVerificationStatus(userChallengeId))
                 .build();
     }
+
+    @GetMapping("/history/{userId}")
+    ApiResponse<List<UserChallengeResponse>> getUserChallengeHistory(@PathVariable Long userId) {
+        return ApiResponse.<List<UserChallengeResponse>>builder()
+                .result(challengeService.getUserChallengeHistory(userId))
+                .build();
+    }
 }

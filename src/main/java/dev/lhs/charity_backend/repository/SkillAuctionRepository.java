@@ -41,4 +41,18 @@ public interface SkillAuctionRepository extends JpaRepository<SkillAuction, Long
      */
     @Query("SELECT sa FROM SkillAuction sa WHERE sa.status = :status AND sa.endTime < :now")
     List<SkillAuction> findActiveAuctionsExpired(@Param("status") AuctionStatus status, @Param("now") LocalDateTime now);
+    
+    /**
+     * Tìm SkillAuction ACTIVE theo skillId
+     * Dùng cho việc đặt giá khi chỉ có skillId
+     */
+    @Query("SELECT sa FROM SkillAuction sa WHERE sa.skill.id = :skillId AND sa.status = :status ORDER BY sa.createdAt DESC")
+    List<SkillAuction> findBySkillIdAndStatus(@Param("skillId") Long skillId, @Param("status") AuctionStatus status);
+    
+    /**
+     * Tìm SkillAuction mới nhất theo skillId (không quan tâm status)
+     * Dùng cho việc đặt giá khi chỉ có skillId
+     */
+    @Query("SELECT sa FROM SkillAuction sa WHERE sa.skill.id = :skillId ORDER BY sa.createdAt DESC")
+    List<SkillAuction> findBySkillIdOrderByCreatedAtDesc(@Param("skillId") Long skillId);
 }

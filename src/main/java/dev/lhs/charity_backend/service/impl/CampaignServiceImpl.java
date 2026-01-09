@@ -5,6 +5,7 @@ import dev.lhs.charity_backend.dto.response.CampaignCommentResponse;
 import dev.lhs.charity_backend.dto.response.CampaignResponse;
 import dev.lhs.charity_backend.entity.*;
 import dev.lhs.charity_backend.enumeration.ErrorCode;
+import dev.lhs.charity_backend.enumeration.VerificationStatus;
 import dev.lhs.charity_backend.exception.AppException;
 import dev.lhs.charity_backend.mapper.CampaignCommentMapper;
 import dev.lhs.charity_backend.mapper.CampaignContentBlockMapper;
@@ -14,6 +15,7 @@ import dev.lhs.charity_backend.service.CampaignService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,13 +61,61 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public List<CampaignResponse> getCampaigns() {
         return campaignRepository.findAll().stream()
-                .map(campaignMapper::toCampaignResponse).toList();
+                .map(campaign -> {
+                    CampaignResponse response = campaignMapper.toCampaignResponse(campaign);
+                    calculateRaisedAmount(response, campaign);
+                    return response;
+                })
+                .toList();
     }
 
     @Override
     public CampaignResponse getCampaign(Long campId) {
         if (!campaignRepository.existsById(campId)) throw new AppException(ErrorCode.CAMPAIGN_NOT_EXISTED);
-        return campaignMapper.toCampaignResponse(campaignRepository.findCampaignById(campId));
+        Campaign campaign = campaignRepository.findCampaignById(campId);
+        CampaignResponse response = campaignMapper.toCampaignResponse(campaign);
+        calculateRaisedAmount(response, campaign);
+        return response;
+    }
+
+    /**
+     * Tính raisedAmount của campaign dựa trên:
+     * - Tổng currentAmount của các challenges (đã được APPROVED)
+     * - Tổng curentBid của các skills
+     */
+    private void calculateRaisedAmount(CampaignResponse response, Campaign campaign) {
+        BigDecimal totalRaised = BigDecimal.ZERO;
+
+        // Tính tổng từ challenges: currentAmount của mỗi challenge
+        if (campaign.getChallenges() != null) {
+            for (Challenge challenge : campaign.getChallenges()) {
+                if (challenge.getCurrentAmount() != null) {
+                    // Tính lại currentAmount từ userChallenges APPROVED
+                    BigDecimal challengeCurrentAmount = BigDecimal.ZERO;
+                    if (challenge.getUserChallenges() != null && challenge.getUnitAmount() != null) {
+                        long approvedCount = challenge.getUserChallenges().stream()
+                                .filter(uc -> uc.getVerificationStatus() == VerificationStatus.APPROVED)
+                                .count();
+                        challengeCurrentAmount = challenge.getUnitAmount().multiply(BigDecimal.valueOf(approvedCount));
+                    }
+                    totalRaised = totalRaised.add(challengeCurrentAmount);
+                }
+            }
+        }
+
+        // Tính tổng từ skills: curentBid của mỗi skill
+        // Lưu ý: skill.curentBid được lưu theo đơn vị nghìn (ví dụ: 500 = 500.000 VND)
+        // Nên cần nhân với 1000 để đúng với đơn vị VND thực tế
+        if (campaign.getSkills() != null) {
+            for (Skill skill : campaign.getSkills()) {
+                if (skill.getCurentBid() != null) {
+                    BigDecimal skillAmount = skill.getCurentBid().multiply(BigDecimal.valueOf(1000));
+                    totalRaised = totalRaised.add(skillAmount);
+                }
+            }
+        }
+
+        response.setRaisedAmount(totalRaised);
     }
 
     @Override
