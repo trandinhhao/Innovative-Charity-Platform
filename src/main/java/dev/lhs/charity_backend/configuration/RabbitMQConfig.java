@@ -11,11 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- * Cấu hình RabbitMQ
- * - Exchange và Queue cho bid processing
- * - Exchange và Queue cho finalization (delayed)
- */
+
 @Configuration
 @EnableRabbit
 public class RabbitMQConfig {
@@ -57,13 +53,9 @@ public class RabbitMQConfig {
                 .with(bidRoutingKey);
     }
 
-    // Finalization Exchange và Queue (Delayed)
-    // Note: Delayed exchange cần RabbitMQ Delayed Message Plugin
-    // Nếu không có plugin, có thể dùng TTL + Dead Letter Exchange
+
     @Bean
     public TopicExchange finalizationExchange() {
-        // Sử dụng CustomExchange với type "x-delayed-message" nếu có plugin
-        // Hoặc dùng TopicExchange thông thường và handle delay ở application level
         return ExchangeBuilder
                 .topicExchange(finalizationExchange)
                 .build();
@@ -100,7 +92,7 @@ public class RabbitMQConfig {
         SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
         factory.setMessageConverter(messageConverter());
-        factory.setConcurrentConsumers(3); // 3 workers xử lý bid
+        factory.setConcurrentConsumers(3); // 3 worker
         factory.setMaxConcurrentConsumers(10);
         return factory;
     }

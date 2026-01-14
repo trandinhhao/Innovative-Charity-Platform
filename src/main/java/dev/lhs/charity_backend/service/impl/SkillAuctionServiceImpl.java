@@ -1,21 +1,19 @@
 package dev.lhs.charity_backend.service.impl;
 
+import dev.lhs.charity_backend.dto.request.BidRequest;
 import dev.lhs.charity_backend.dto.request.SkillAuctionCreationRequest;
+import dev.lhs.charity_backend.dto.response.BidResponse;
 import dev.lhs.charity_backend.dto.response.SkillAuctionResponse;
-import dev.lhs.charity_backend.entity.Campaign;
-import dev.lhs.charity_backend.entity.Skill;
-import dev.lhs.charity_backend.entity.SkillAuction;
-import dev.lhs.charity_backend.entity.User;
+import dev.lhs.charity_backend.entity.*;
 import dev.lhs.charity_backend.enumeration.AuctionStatus;
 import dev.lhs.charity_backend.enumeration.ErrorCode;
 import dev.lhs.charity_backend.exception.AppException;
-import dev.lhs.charity_backend.repository.CampaignRepository;
-import dev.lhs.charity_backend.repository.SkillAuctionRepository;
-import dev.lhs.charity_backend.repository.SkillRepository;
-import dev.lhs.charity_backend.repository.UserRepository;
+import dev.lhs.charity_backend.repository.*;
 import dev.lhs.charity_backend.service.AuctionStateCacheService;
+import dev.lhs.charity_backend.service.BidProducer;
 import dev.lhs.charity_backend.service.FinalizationProducer;
 import dev.lhs.charity_backend.service.SkillAuctionService;
+import dev.lhs.charity_backend.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -41,9 +39,12 @@ public class SkillAuctionServiceImpl implements SkillAuctionService {
     private final FinalizationProducer finalizationProducer;
     private final AuctionStateCacheService auctionStateCacheService;
 
+    private final BidProducer bidProducer;
+    private final BidRepository bidRepository;
+
     @Override
     @Transactional
-    public SkillAuctionResponse createAuction(SkillAuctionCreationRequest request) {
+    public SkillAuctionResponse createSkillWithAuction(SkillAuctionCreationRequest request) {
         log.info("Creating new auction: skillId={}, skillOwnerId={}, campaignId={}", 
                 request.getSkillId(), request.getSkillOwnerId(), request.getCampaignId());
         
@@ -127,9 +128,112 @@ public class SkillAuctionServiceImpl implements SkillAuctionService {
     }
 
     @Override
+    public String placeBidForSkill(Long auctionId, BigDecimal bidAmount) {
+
+        if (bidAmount == null || bidAmount.compareTo(BigDecimal.ZERO) <= 0) {
+            throw new AppException(ErrorCode.BID_MUST_BE_HIGHER);
+        }
+
+        // BidRequest
+        BidRequest bidRequest = BidRequest.builder()
+                .auctionId(auctionId)
+                .bidderId(SecurityUtils.getUserId())
+                .bidAmount(bidAmount)
+                .clientTimestamp(System.currentTimeMillis())
+                .build();
+
+        // Đẩy vào queue
+        bidProducer.sendBidRequest(bidRequest);
+
+        log.info("Bid request queued: auctionId={}, bidderId={}, amount={}",
+                auctionId, SecurityUtils.getUserId(), bidAmount);
+
+        return "Bid đã được ghi nhận, đang xử lý";
+    }
+
+    @Override
+    public BidResponse checkBidStatus(Long auctionId) {
+
+        SkillAuction auction = skillAuctionRepository.findById(auctionId)
+                .orElseThrow(() -> new AppException(ErrorCode.AUCTION_NOT_EXISTED));
+
+        Long bidderId = SecurityUtils.getUserId();
+
+        // Tìm bid gần nhất của user trong auction này
+        List<Bid> userBids = bidRepository.findLatestBidByAuctionAndBidder(auctionId, bidderId);
+
+        if (userBids.isEmpty()) {
+            return BidResponse.builder()
+                    .bidderId(bidderId)
+                    .auctionId(auctionId)
+                    .isHighestBid(false)
+                    .build();
+        }
+
+        Bid latestBid = userBids.get(0);
+        boolean isHighestBid = auction.getHighestBidderId() != null
+                && auction.getHighestBidderId().equals(bidderId);
+
+        return BidResponse.builder()
+                .id(latestBid.getId())
+                .bidAmount(latestBid.getBidAmount())
+                .bidTime(latestBid.getBidTime())
+                .bidderId(bidderId)
+                .auctionId(auctionId)
+                .isHighestBid(isHighestBid)
+                .build();
+    }
+
+    @Override
     public List<SkillAuctionResponse> listActiveAuctions() {
         return skillAuctionRepository.findByStatus(AuctionStatus.ACTIVE).stream()
                 .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BidResponse> getAuctionBids(Long auctionId) {
+        List<Bid> bids = bidRepository.findAllBidsByAuctionId(auctionId);
+
+        SkillAuction auction = skillAuctionRepository.findById(auctionId)
+                .orElseThrow(() -> new AppException(ErrorCode.AUCTION_NOT_EXISTED));
+
+        Long highestBidderId = auction.getHighestBidderId();
+
+        return bids.stream()
+                .map(bid -> BidResponse.builder()
+                        .id(bid.getId())
+                        .bidAmount(bid.getBidAmount())
+                        .bidTime(bid.getBidTime())
+                        .bidderId(bid.getBidder().getId())
+                        .auctionId(auctionId)
+                        .isHighestBid(highestBidderId != null && highestBidderId.equals(bid.getBidder().getId()))
+                        .build())
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BidResponse> getMyBidHistory() {
+
+        Long userId = SecurityUtils.getUserId();
+
+        List<Bid> userBids = bidRepository.findAllBidsByUserIdOrderByBidTimeDesc(userId);
+
+        return userBids.stream()
+                .map(bid -> {
+                    SkillAuction auction = bid.getSkillAuction();
+                    Long highestBidderId = auction != null ? auction.getHighestBidderId() : null;
+
+                    return BidResponse.builder()
+                            .id(bid.getId())
+                            .bidAmount(bid.getBidAmount())
+                            .bidTime(bid.getBidTime())
+                            .bidderId(bid.getBidder().getId())
+                            .bidderUsername(bid.getBidder().getUsername())
+                            .auctionId(auction != null ? auction.getId() : null)
+                            .isHighestBid(highestBidderId != null && highestBidderId.equals(userId))
+                            .build();
+                })
                 .collect(Collectors.toList());
     }
 
@@ -187,14 +291,6 @@ public class SkillAuctionServiceImpl implements SkillAuctionService {
             log.info("Disabled expired auction: auctionId={}, endTime={}, winnerId={}, finalBid={}", 
                     auction.getId(), auction.getEndTime(), winnerId, finalBid);
         }
-    }
-
-    @Override
-    public boolean isHighestBidder(Long auctionId, Long bidderId) {
-        SkillAuction auction = skillAuctionRepository.findById(auctionId)
-                .orElseThrow(() -> new AppException(ErrorCode.AUCTION_NOT_EXISTED));
-        
-        return auction.getHighestBidderId() != null && auction.getHighestBidderId().equals(bidderId);
     }
 
     private SkillAuctionResponse toResponse(SkillAuction auction) {

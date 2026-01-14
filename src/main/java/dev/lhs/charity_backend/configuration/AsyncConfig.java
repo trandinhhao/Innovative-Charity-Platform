@@ -8,22 +8,17 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.Executor;
 
-/**
- * Cấu hình async processing cho Evidence Verification
- * Hỗ trợ xử lý song song nhiều request (200-300 requests)
- * Cũng enable scheduling cho các scheduled tasks (AuctionActivationScheduler)
- */
 @Configuration
-@EnableAsync
-@EnableScheduling
+@EnableAsync // enable async processing
+@EnableScheduling // enable scheduling for scheduled tasks
 public class AsyncConfig {
 
     @Bean(name = "evidenceVerificationExecutor")
     public Executor evidenceVerificationExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setCorePoolSize(10); // Số thread cố định
-        executor.setMaxPoolSize(50); // Số thread tối đa khi có nhiều request
-        executor.setQueueCapacity(200); // Hàng đợi tối đa
+        executor.setCorePoolSize(10);
+        executor.setMaxPoolSize(50);
+        executor.setQueueCapacity(200);
         executor.setThreadNamePrefix("evidence-verification-");
         executor.setWaitForTasksToCompleteOnShutdown(true);
         executor.setAwaitTerminationSeconds(60);

@@ -10,10 +10,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-/**
- * Entity đại diện cho giao dịch tài chính
- * Được tạo khi phiên đấu giá kết thúc và có người thắng
- */
 @Getter
 @Setter
 @Builder
@@ -43,7 +39,7 @@ public class Transaction {
     @CreatedDate
     private LocalDateTime createdAt;
 
-    // n transactions - 1 user (người thắng đấu giá)
+    // n transactions - 1 user(winner)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "winner_id", nullable = false)
     @JsonIgnore
@@ -55,7 +51,7 @@ public class Transaction {
     @JsonIgnore
     private SkillAuction skillAuction;
 
-    // n transactions - 1 campaign (chiến dịch nhận tiền)
+    // n transactions - 1 campaign
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "campaign_id", nullable = false)
     @JsonIgnore

@@ -13,11 +13,8 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateAuctionAndBidRequest {
-    
-    private Long userId; // User đặt giá (bidder)
-    
+
     private Long skillId; // Kỹ năng được đấu giá
-    
     private BigDecimal bidAmount; // Giá tiền đã thanh toán (đơn vị nghìn)
 }
 

@@ -19,7 +19,7 @@ public class CampaignResponse {
     private String thumbnailUrl;
     private String description;
     private BigDecimal goalAmount;
-    private BigDecimal raisedAmount; // Tổng tiền = tổng challenges.currentAmount + tổng skills.curentBid
+    private BigDecimal raisedAmount; // = tổng challenges.currentAmount + tổng skills.curentBid
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private List<CampaignContentBlock> campaignContentBlocks = new ArrayList<>();

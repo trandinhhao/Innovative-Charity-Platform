@@ -41,7 +41,10 @@ public class ApplicationConfig {
             if (!roleRepository.existsById(PredefinedRole.ADMIN_ROLE)) {
 
                 // create admin role
-                Role adminRole = Role.builder().name(PredefinedRole.ADMIN_ROLE).description("Admin role").build();
+                Role adminRole = Role.builder()
+                        .name(PredefinedRole.ADMIN_ROLE)
+                        .description("Admin role")
+                        .build();
                 roleRepository.save(adminRole);
                 roles.add(adminRole);
             }
@@ -49,7 +52,10 @@ public class ApplicationConfig {
             if (!roleRepository.existsById(PredefinedRole.USER_ROLE)) {
 
                 // create user role
-                Role userRole = Role.builder().name(PredefinedRole.USER_ROLE).description("User role").build();
+                Role userRole = Role.builder()
+                        .name(PredefinedRole.USER_ROLE)
+                        .description("User role")
+                        .build();
                 roleRepository.save(userRole);
                 roles.add(userRole);
             }

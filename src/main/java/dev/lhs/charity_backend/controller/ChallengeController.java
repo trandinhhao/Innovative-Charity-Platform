@@ -17,10 +17,10 @@ import java.util.List;
 public class ChallengeController {
     private final ChallengeService challengeService;
 
-    @PostMapping("/{userId}")
-    ApiResponse<ChallengeResponse> create(@PathVariable Long userId, @RequestBody ChallengeCreationRequest request) {
+    @PostMapping()
+    ApiResponse<ChallengeResponse> create(@RequestBody ChallengeCreationRequest request) {
         return ApiResponse.<ChallengeResponse>builder()
-                .result(challengeService.createChallenge(userId, request))
+                .result(challengeService.createChallenge(request))
                 .build();
     }
 
@@ -45,12 +45,11 @@ public class ChallengeController {
                 .build();
     }
 
-    @PostMapping("/{challengeId}/submit/{userId}")
+    @PostMapping("/{challengeId}/submit")
     ApiResponse<UserChallengeResponse> submitProof (@PathVariable Long challengeId,
-                                                    @PathVariable Long userId,
                                                     @RequestParam("file")MultipartFile file) {
         return ApiResponse.<UserChallengeResponse>builder()
-                .result(challengeService.submitProof(userId, challengeId, file))
+                .result(challengeService.submitProof(challengeId, file))
                 .build();
     }
 
@@ -61,10 +60,10 @@ public class ChallengeController {
                 .build();
     }
 
-    @GetMapping("/history/{userId}")
-    ApiResponse<List<UserChallengeResponse>> getUserChallengeHistory(@PathVariable Long userId) {
+    @GetMapping("/history")
+    ApiResponse<List<UserChallengeResponse>> getUserChallengeHistory() {
         return ApiResponse.<List<UserChallengeResponse>>builder()
-                .result(challengeService.getUserChallengeHistory(userId))
+                .result(challengeService.getUserChallengeHistory())
                 .build();
     }
 }

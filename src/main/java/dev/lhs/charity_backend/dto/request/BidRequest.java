@@ -4,9 +4,6 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
-/**
- * DTO cho bid request từ client
- */
 @Getter
 @Setter
 @Builder
@@ -15,11 +12,8 @@ import java.math.BigDecimal;
 public class BidRequest {
     
     private Long auctionId;
-    
     private Long bidderId;
-    
     private BigDecimal bidAmount;
-    
     private Long clientTimestamp; // Timestamp từ client để xử lý tie-breaker
 }
 

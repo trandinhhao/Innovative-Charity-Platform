@@ -1,5 +1,6 @@
-package dev.lhs.charity_backend.service;
+package dev.lhs.charity_backend.service.scheduler;
 
+import dev.lhs.charity_backend.service.SkillAuctionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;

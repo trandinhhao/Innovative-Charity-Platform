@@ -11,18 +11,10 @@ import java.util.Map;
  */
 public interface ImagePreprocessingService {
     
-    /**
-     * Xử lý ảnh: resize, nén, và trích metadata
-     * @param file File ảnh gốc
-     * @return Map chứa metadata (width, height, size, format, etc.)
-     */
+    // resize, zip, get metadata
     Map<String, Object> preprocessImage(MultipartFile file);
     
-    /**
-     * Validate ảnh có hợp lệ không (format, size, etc.)
-     * @param file File ảnh
-     * @return true nếu hợp lệ
-     */
+    // validate image: format, size,...
     boolean validateImage(MultipartFile file);
 }
 

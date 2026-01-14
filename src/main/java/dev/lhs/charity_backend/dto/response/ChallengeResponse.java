@@ -20,7 +20,7 @@ public class ChallengeResponse {
     private String description;
     private BigDecimal unitAmount;
     private BigDecimal goalAmount;
-    private BigDecimal currentAmount; // Số tiền hiện tại = số lượng APPROVED * unitAmount
+    private BigDecimal currentAmount; // = số lượng APPROVED * unitAmount
     private List<UserChallenge> userChallenges = new ArrayList<>();
     private Long userId;
     private LocalDateTime startDate;

@@ -12,12 +12,14 @@ import dev.lhs.charity_backend.mapper.CampaignContentBlockMapper;
 import dev.lhs.charity_backend.mapper.CampaignMapper;
 import dev.lhs.charity_backend.repository.*;
 import dev.lhs.charity_backend.service.CampaignService;
+import dev.lhs.charity_backend.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -146,7 +148,10 @@ public class CampaignServiceImpl implements CampaignService {
         Campaign campaign = campaignRepository.findById(campId)
                 .orElseThrow(() -> new AppException(ErrorCode.CAMPAIGN_NOT_EXISTED));
 
-        User user = userRepository.findById(request.getUserId())
+        Long userId = SecurityUtils.getUserId();
+        if (userId == null) throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION);
+
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         CampaignComment campaignComment = campaignCommentMapper.toCampaignComment(request);

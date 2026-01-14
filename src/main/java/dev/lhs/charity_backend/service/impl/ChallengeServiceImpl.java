@@ -3,7 +3,6 @@ package dev.lhs.charity_backend.service.impl;
 import dev.lhs.charity_backend.dto.request.ChallengeCreationRequest;
 import dev.lhs.charity_backend.dto.response.ChallengeResponse;
 import dev.lhs.charity_backend.dto.response.UserChallengeResponse;
-import dev.lhs.charity_backend.dto.response.UserSubmitResponse;
 import dev.lhs.charity_backend.entity.Campaign;
 import dev.lhs.charity_backend.entity.Challenge;
 import dev.lhs.charity_backend.entity.User;
@@ -19,6 +18,7 @@ import dev.lhs.charity_backend.repository.UserRepository;
 import dev.lhs.charity_backend.service.ChallengeService;
 import dev.lhs.charity_backend.service.ChatService;
 import dev.lhs.charity_backend.service.ImageService;
+import dev.lhs.charity_backend.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,8 +41,8 @@ public class ChallengeServiceImpl implements ChallengeService {
     private final dev.lhs.charity_backend.service.EvidenceVerificationService evidenceVerificationService;
 
     @Override
-    public ChallengeResponse createChallenge(Long userId, ChallengeCreationRequest request) {
-        User user = userRepository.findUserById(userId);
+    public ChallengeResponse createChallenge(ChallengeCreationRequest request) {
+        User user = userRepository.findUserById(SecurityUtils.getUserId());
         Campaign campaign = campaignRepository.findCampaignById(request.getCampaignId());
 
         if (user == null) throw new AppException(ErrorCode.USER_NOT_EXISTED);
@@ -79,10 +79,7 @@ public class ChallengeServiceImpl implements ChallengeService {
         } else throw new AppException(ErrorCode.CHALLENGE_NOT_EXISTED);
     }
 
-    /**
-     * Tính currentAmount dựa trên số lượng userChallenges đã được APPROVED
-     * currentAmount = số lượng APPROVED * unitAmount
-     */
+    // currentAmount = APPROVED * unitAmount
     private void calculateCurrentAmount(ChallengeResponse response, Challenge challenge) {
         if (challenge.getUserChallenges() == null || challenge.getUnitAmount() == null) {
             response.setCurrentAmount(BigDecimal.ZERO);
@@ -106,26 +103,21 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
-    public UserChallengeResponse submitProof(Long userId, Long challengeId, MultipartFile file) {
-        // Validate user and challenge
+    public UserChallengeResponse submitProof(Long challengeId, MultipartFile file) {
+        Long userId = SecurityUtils.getUserId();
+        if (userId == null) throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION);
+
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         Challenge challenge = challengeRepository.findById(challengeId)
                 .orElseThrow(() -> new AppException(ErrorCode.CHALLENGE_NOT_EXISTED));
 
-        // Sử dụng EvidenceVerificationService với async processing
-        // Trả về ngay với status PROCESSING
-//        evidenceVerificationService.verifyEvidenceAsync(user, challenge, file);
+        // async processing -> return PROCESSING status immediately
+        //evidenceVerificationService.verifyEvidenceAsync(user, challenge, file);
 
-        // Tạo UserChallenge tạm thời với status PROCESSING để trả về ngay
-        // (Thực tế UserChallenge đã được tạo trong verifyEvidenceAsync, nhưng để đảm bảo response nhanh,
-        // ta có thể query lại hoặc tạo một response riêng)
-        // Tuy nhiên, để đơn giản, ta sẽ đợi một chút để có UserChallenge ID
-        
-        // Tạm thời: gọi sync để có kết quả ngay (có thể thay bằng cách khác tốt hơn)
-        // Trong production, nên trả về ngay với status PROCESSING và client poll status
-        UserChallenge userChallenge = evidenceVerificationService.verifyEvidence(user, challenge, file);
+        // sync processing: wait for async processing to finish
+        UserChallenge userChallenge = evidenceVerificationService.verifyEvidenceSync(user, challenge, file);
 
         return challengeMapper.toUserChallengeResponse(userChallenge);
     }
@@ -137,8 +129,12 @@ public class ChallengeServiceImpl implements ChallengeService {
     }
 
     @Override
-    public List<UserChallengeResponse> getUserChallengeHistory(Long userId) {
+    public List<UserChallengeResponse> getUserChallengeHistory() {
         // Validate user exists
+
+        Long userId = SecurityUtils.getUserId();
+        if (userId == null) throw new AppException(ErrorCode.UNCATEGORIZED_EXCEPTION);
+
         if (!userRepository.existsById(userId)) {
             throw new AppException(ErrorCode.USER_NOT_EXISTED);
         }

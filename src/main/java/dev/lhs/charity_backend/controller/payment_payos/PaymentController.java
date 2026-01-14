@@ -1,7 +1,6 @@
 package dev.lhs.charity_backend.controller.payment_payos;
 
 import dev.lhs.charity_backend.dto.payment_payos.PayOSApiResponse;
-import dev.lhs.charity_backend.dto.response.ApiResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

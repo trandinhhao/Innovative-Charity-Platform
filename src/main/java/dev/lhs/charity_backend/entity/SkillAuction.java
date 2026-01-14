@@ -13,10 +13,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Entity đại diện cho một phiên đấu giá kỹ năng (Auction Session)
- * Mỗi Skill có thể có nhiều phiên đấu giá
- */
 @Getter
 @Setter
 @Builder
@@ -57,7 +53,7 @@ public class SkillAuction {
     private Integer statusCode = AuctionStatus.PENDING.getCode();
 
     @Column(name = "highest_bidder_id")
-    private Long highestBidderId; // ID của người đặt giá cao nhất hiện tại
+    private Long highestBidderId;
 
     @Column(name = "created_at", nullable = false)
     @CreatedDate
@@ -67,39 +63,37 @@ public class SkillAuction {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    // n skill_auctions - 1 skill (kỹ năng được đấu giá)
+    // n skill_auctions - 1 skill
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "skill_id", nullable = false)
     @JsonIgnore
     private Skill skill;
 
-    // n skill_auctions - 1 user (skill owner - người cung cấp kỹ năng)
+    // n skill_auctions - 1 user(owner)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "skill_owner_id", nullable = false)
     @JsonIgnore
     private User skillOwner;
 
-    // n skill_auctions - 1 campaign (chiến dịch từ thiện nhận tiền)
+    // n skill_auctions - 1 campaign
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "campaign_id", nullable = false)
     @JsonIgnore
     private Campaign campaign;
 
-    // 1 skill_auction - n bids (các lượt đặt giá)
+    // 1 skill_auction - n bids
     @OneToMany(mappedBy = "skillAuction", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     @JsonIgnore
     private List<Bid> bids = new ArrayList<>();
 
-    // 1 skill_auction - n transactions (giao dịch khi kết thúc)
+    // 1 skill_auction - n transactions
     @OneToMany(mappedBy = "skillAuction", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     @JsonIgnore
     private List<Transaction> transactions = new ArrayList<>();
 
-    /**
-     * Helper method để sync status enum với statusCode
-     */
+
     public void setStatus(AuctionStatus status) {
         this.status = status;
         this.statusCode = status.getCode();

@@ -21,25 +21,6 @@ public class CheckoutController {
         this.payOS = payOS;
     }
 
-    // Commented out - These methods return Thymeleaf views, but this is a REST API backend
-    // Frontend should handle these routes instead
-    /*
-    @RequestMapping(value = "/")
-    public String Index() {
-        return "index";
-    }
-
-    @RequestMapping(value = "/success")
-    public String Success() {
-        return "success";
-    }
-
-    @RequestMapping(value = "/cancel")
-    public String Cancel() {
-        return "cancel";
-    }
-    */
-
     @RequestMapping(
             method = RequestMethod.POST,
             value = "/create-payment-link",

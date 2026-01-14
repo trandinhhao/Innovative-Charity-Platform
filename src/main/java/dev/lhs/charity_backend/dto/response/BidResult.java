@@ -12,13 +12,9 @@ import java.math.BigDecimal;
 public class BidResult {
     
     private boolean success;
-    
     private String message;
-    
     private BigDecimal currentBid;
-    
     private Long highestBidderId;
-    
     private Long bidId; // ID của bid record nếu thành công
 }
 

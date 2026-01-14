@@ -4,7 +4,6 @@ import java.util.Map;
 
 import dev.lhs.charity_backend.dto.payment_payos.CreatePaymentLinkRequestBody;
 import dev.lhs.charity_backend.dto.payment_payos.PayOSApiResponse;
-import dev.lhs.charity_backend.dto.response.ApiResponse;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -48,7 +47,11 @@ public class OrderController {
             final long price = RequestBody.getPrice();
             long orderCode = System.currentTimeMillis() / 1000;
             PaymentLinkItem item =
-                    PaymentLinkItem.builder().name(productName).quantity(1).price(price).build();
+                    PaymentLinkItem.builder()
+                            .name(productName)
+                            .quantity(1)
+                            .price(price)
+                            .build();
 
             CreatePaymentLinkRequest paymentData =
                     CreatePaymentLinkRequest.builder()

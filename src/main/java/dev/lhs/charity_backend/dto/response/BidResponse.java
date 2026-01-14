@@ -5,9 +5,6 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-/**
- * DTO response cho Bid information
- */
 @Getter
 @Setter
 @Builder
@@ -16,16 +13,10 @@ import java.time.LocalDateTime;
 public class BidResponse {
     
     private Long id;
-    
     private BigDecimal bidAmount;
-    
     private LocalDateTime bidTime;
-    
     private Long bidderId;
-    
-    private String bidderUsername; // Optional: có thể thêm nếu cần
-    
+    private String bidderUsername; // Optional
     private Long auctionId;
-    
-    private Boolean isHighestBid; // Có phải bid cao nhất không
+    private Boolean isHighestBid;
 }

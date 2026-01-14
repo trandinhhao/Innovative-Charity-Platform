@@ -1,4 +1,4 @@
-package dev.lhs.charity_backend.configuration;
+package dev.lhs.charity_backend.configuration.security;
 
 import com.nimbusds.jose.JOSEException;
 import dev.lhs.charity_backend.dto.request.IntrospectRequest;
@@ -33,7 +33,9 @@ public class CustomJwtDecoder implements JwtDecoder { // custom jwtdecoder
 
         try {
             IntrospectResponse response = authenticationService.introspect(
-                    IntrospectRequest.builder().token(token).build());
+                    IntrospectRequest.builder()
+                            .token(token)
+                            .build());
 
             if (!response.isValid()) throw new JwtException("Token invalid");
         } catch (ParseException | JOSEException e) {

@@ -1,4 +1,4 @@
-package dev.lhs.charity_backend.configuration;
+package dev.lhs.charity_backend.configuration.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.lhs.charity_backend.dto.response.ApiResponse;

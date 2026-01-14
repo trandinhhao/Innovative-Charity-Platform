@@ -36,5 +36,5 @@ build/
 # custom
 #src/main/resources/application.yml
 src/main/java/dev/lhs/charity_backend/document/
-
+src/main/java/dev/lhs/charity_backend/postman/
 .env

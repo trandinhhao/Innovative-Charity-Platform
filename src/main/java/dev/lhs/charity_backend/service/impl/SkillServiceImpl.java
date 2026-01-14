@@ -264,7 +264,7 @@ public class SkillServiceImpl implements SkillService {
                 .build();
         
         // Gọi SkillAuctionService để tạo SkillAuction
-        SkillAuctionResponse auctionResponse = skillAuctionService.createAuction(request);
+        SkillAuctionResponse auctionResponse = skillAuctionService.createSkillWithAuction(request);
         log.info("Auto-created SkillAuction via SkillAuctionService: auctionId={}, skillId={}, startingBid={}, endTime={}", 
                 auctionResponse.getId(), skill.getId(), startingBid, endTime);
         

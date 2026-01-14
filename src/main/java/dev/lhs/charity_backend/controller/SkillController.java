@@ -20,10 +20,10 @@ public class SkillController {
     private final SkillService skillService;
 
     // user create skill
-    @PostMapping("/{userId}")
-    ApiResponse<SkillResponse> create(@PathVariable Long userId, @RequestBody SkillCreationRequest request) {
+    @PostMapping()
+    ApiResponse<SkillResponse> create(@RequestBody SkillCreationRequest request) {
         return ApiResponse.<SkillResponse>builder()
-                .result(skillService.createSkill(userId, request))
+                .result(skillService.createSkill(request))
                 .build();
     }
 
@@ -49,12 +49,11 @@ public class SkillController {
     }
 
     // user auc skill
-    @PostMapping("/auction/{userId}/{skillId}")
-    ApiResponse<SkillAuctionResponse> auction (@PathVariable Long userId,
-                                               @PathVariable Long skillId,
+    @PostMapping("/auction/{skillId}")
+    ApiResponse<SkillAuctionResponse> auction (@PathVariable Long skillId,
                                                @RequestBody BigDecimal bidAmount) {
         return ApiResponse.<SkillAuctionResponse>builder()
-                .result(skillService.auction(userId, skillId, bidAmount))
+                .result(skillService.auction(skillId, bidAmount))
                 .build();
     }
     
@@ -65,7 +64,7 @@ public class SkillController {
     @PostMapping("/create-auction-and-bid")
     ApiResponse<SkillAuctionResponse> createAuctionAndBid(@RequestBody CreateAuctionAndBidRequest request) {
         return ApiResponse.<SkillAuctionResponse>builder()
-                .result(skillService.createAuctionAndBid(request.getUserId(), request.getSkillId(), request.getBidAmount()))
+                .result(skillService.createAuctionAndBid(request.getSkillId(), request.getBidAmount()))
                 .build();
     }
 }

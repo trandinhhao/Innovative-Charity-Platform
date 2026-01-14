@@ -40,7 +40,7 @@ public class UserChallenge {
     @Column(name = "is_match", nullable = false)
     private Boolean isMatch;
 
-    // New fields for Evidence Verification Pipeline
+    // Evidence Verification Pipeline
     @Enumerated(EnumType.STRING)
     @Column(name = "verification_status", nullable = false)
     @Builder.Default

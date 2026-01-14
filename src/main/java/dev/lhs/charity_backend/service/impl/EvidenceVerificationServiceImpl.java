@@ -5,7 +5,9 @@ import dev.lhs.charity_backend.dto.response.VerificationResult;
 import dev.lhs.charity_backend.entity.Challenge;
 import dev.lhs.charity_backend.entity.User;
 import dev.lhs.charity_backend.entity.UserChallenge;
+import dev.lhs.charity_backend.enumeration.ErrorCode;
 import dev.lhs.charity_backend.enumeration.VerificationStatus;
+import dev.lhs.charity_backend.exception.AppException;
 import dev.lhs.charity_backend.repository.UserChallengeRepository;
 import dev.lhs.charity_backend.service.EvaluationService;
 import dev.lhs.charity_backend.service.EvidenceAnalysisService;
@@ -52,7 +54,7 @@ public class EvidenceVerificationServiceImpl implements EvidenceVerificationServ
         log.info("Starting async evidence verification for user {} and challenge {}", user.getId(), challenge.getId());
         
         try {
-            UserChallenge result = verifyEvidence(user, challenge, imageFile);
+            UserChallenge result = verifyEvidenceSync(user, challenge, imageFile);
             return CompletableFuture.completedFuture(result);
         } catch (Exception e) {
             log.error("Error in async evidence verification: {}", e.getMessage(), e);
@@ -64,7 +66,7 @@ public class EvidenceVerificationServiceImpl implements EvidenceVerificationServ
 
     @Override
     @Transactional
-    public UserChallenge verifyEvidence(User user, Challenge challenge, MultipartFile imageFile) {
+    public UserChallenge verifyEvidenceSync(User user, Challenge challenge, MultipartFile imageFile) {
         log.info("Starting evidence verification pipeline for user {} and challenge {}", user.getId(), challenge.getId());
         
         // Bước 3: Upload ảnh lên Cloudinary và lưu URL
@@ -87,12 +89,12 @@ public class EvidenceVerificationServiceImpl implements EvidenceVerificationServ
         log.info("UserChallenge created with ID: {} and status: PROCESSING", userChallenge.getId());
         
         try {
-            // Bước 4: Tiền xử lý ảnh (resize/nén/trích metadata)
+            // Bước 4: preprocessing (resize/nén/trích metadata)
             log.info("Step 4: Preprocessing image...");
             Map<String, Object> metadata = imagePreprocessingService.preprocessImage(imageFile);
             log.info("Image preprocessing completed. Metadata: {}", metadata);
             
-            // Bước 5: Gửi ảnh + requirements đến AI
+            // Bước 5: send to AI
             log.info("Step 5: Sending to AI for analysis...");
             AIAnalysisResult aiResult = evidenceAnalysisService.analyzeEvidence(imageUrl, challenge);
             log.info("AI analysis completed. Confidence: {}, Meets requirements: {}", 
@@ -138,14 +140,10 @@ public class EvidenceVerificationServiceImpl implements EvidenceVerificationServ
     @Transactional(readOnly = true)
     public UserChallenge getVerificationStatus(Long userChallengeId) {
         return userChallengeRepository.findById(userChallengeId)
-                .orElseThrow(() -> new RuntimeException("UserChallenge not found with ID: " + userChallengeId));
+                .orElseThrow(() -> new AppException(ErrorCode.USER_CHALLENGE_NOT_FOUND));
     }
 
-    /**
-     * Tạo UserChallenge với status lỗi khi có exception
-     */
     private UserChallenge createUserChallengeWithError(User user, Challenge challenge, MultipartFile imageFile, String errorMessage) {
-        // Challenge đã được truyền vào, không cần query lại
         try {
             String imageUrl = imageService.uploadImage(imageFile);
             
